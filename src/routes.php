@@ -6,10 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @var \Silex\Application $app
  */
-$app
-    ->get('/', function () use ($app) {
-        return $app['twig']->render('index.html.twig', []);
-    })
+
+$app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
     ->bind('homepage');
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
