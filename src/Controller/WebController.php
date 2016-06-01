@@ -20,4 +20,13 @@ class WebController
     {
         return $app['twig']->render('index.html.twig', []);
     }
+
+    /**
+     * @param Application $app
+     * @return string
+     */
+    public function about(Application $app)
+    {
+        return $app['twig']->render('about.html.twig', []);
+    }
 }

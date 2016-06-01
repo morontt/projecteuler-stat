@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 $app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
     ->bind('homepage');
 
+$app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
+    ->bind('about');
+
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
         return;
