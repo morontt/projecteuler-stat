@@ -3,9 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @var \Silex\Application $app
- */
+/* @var \Silex\Application $app */
 
 $app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
     ->bind('homepage');
