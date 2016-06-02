@@ -15,6 +15,7 @@
           rel="stylesheet">
     <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
     <link href="/css/sticky-footer-navbar.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -41,6 +42,27 @@
                 <li {% if global.request.get('_route') == 'about' %}class="active"{% endif %}>
                     <a href="{{ path('about') }}">About</a>
                 </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li>
+                        <p class="navbar-text">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ global.user.username }}
+                        </p>
+                    </li>
+                    <li {% if global.request.get('_route') == 'login' %}class="active"{% endif %}>
+                        <a href="{{ path('logout') }}">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li {% if global.request.get('_route') == 'login' %}class="active"{% endif %}>
+                        <a href="{{ path('login') }}">
+                            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

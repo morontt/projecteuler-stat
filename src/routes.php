@@ -1,5 +1,6 @@
 <?php
 
+use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,6 +11,15 @@ $app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
 
 $app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
     ->bind('about');
+
+$app->get('/login', 'MttProjecteuler\\Controller\\WebController::login')
+    ->bind('login');
+
+$app->mount('/area_51', function (ControllerCollection $admin) {
+    $admin->get('/', function () {
+        return 'Secured area';
+    });
+});
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

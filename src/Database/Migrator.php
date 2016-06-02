@@ -55,21 +55,30 @@ class Migrator
     {
         $schema = new Schema();
 
-        $languagesTable = $schema->createTable('lang');
-        $languagesTable->addColumn('id', 'integer', ['autoincrement' => true,]);
+        $userTable = $schema->createTable('users');
+        $userTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
+        $userTable->addColumn('username', 'string', ['length' => 32,]);
+        $userTable->addColumn('salt', 'string', ['length' => 20,]);
+        $userTable->addColumn('password_hash', 'string', ['length' => 64]);
+        $userTable->addColumn('created_at', 'datetime');
+        $userTable->setPrimaryKey(['id']);
+        $userTable->addUniqueIndex(['username']);
+
+        $languagesTable = $schema->createTable('languages');
+        $languagesTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
         $languagesTable->addColumn('name', 'string', ['length' => 32]);
         $languagesTable->addColumn('comment', 'string', ['length' => 255]);
-        $languagesTable->addUniqueIndex(['name']);
+        $languagesTable->addColumn('created_at', 'datetime');
         $languagesTable->setPrimaryKey(['id']);
 
-        $solutionsTable = $schema->createTable('solution');
-        $solutionsTable->addColumn('id', 'integer', ['autoincrement' => true,]);
+        $solutionsTable = $schema->createTable('solutions');
+        $solutionsTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
         $solutionsTable->addColumn('problem_number', 'integer');
-        $solutionsTable->addColumn('lang_id', 'integer', ['notnull' => false,]);
+        $solutionsTable->addColumn('lang_id', 'integer', ['notnull' => false, 'unsigned' => true,]);
         $solutionsTable->addColumn('execution_time', 'float');
         $solutionsTable->addColumn('deviation_time', 'float');
         $solutionsTable->addColumn('completed', 'datetime');
-        $solutionsTable->addUniqueIndex(['problem_number']);
+        $solutionsTable->addColumn('created_at', 'datetime');
         $solutionsTable->setPrimaryKey(['id']);
 
         $solutionsTable->addForeignKeyConstraint($languagesTable, ['lang_id'], ['id'], ['onDelete' => 'SET NULL']);
