@@ -2,3 +2,4 @@
 /bin/
 /config/parameters.php
 /behat.yml
+/pimple.json
