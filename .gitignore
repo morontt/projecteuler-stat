@@ -1,3 +1,4 @@
 /vendor/
 /bin/
 /config/parameters.php
+/behat.yml

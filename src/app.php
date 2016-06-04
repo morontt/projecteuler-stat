@@ -26,6 +26,7 @@ $parameters = require_once __DIR__ . '/../config/parameters.php';
 $app->register(new DoctrineServiceProvider(), [
     'db.options' => [
         'driver' => 'pdo_mysql',
+        'host' => $parameters['db_host'],
         'dbname' => $parameters['db_name'],
         'user' => $parameters['db_user'],
         'password' => $parameters['db_password'],

@@ -1,0 +1,34 @@
+machine:
+  timezone:
+    Europe/Zaporozhye
+  hosts:
+    pe-stat.loc: 127.0.0.1
+  php:
+    version: 5.5.9
+
+checkout:
+  post:
+    - cp ./var/ci/behat.ci.yml ./behat.yml
+    - cp ./var/ci/parameters.php ./config/parameters.php
+
+dependencies:
+  cache_directories:
+    - vendor
+    - bin
+  override:
+    - composer install --no-interaction
+  post:
+    - cp ./var/ci/pe-stat.loc.conf /etc/apache2/sites-available
+    - sudo a2ensite pe-stat.loc.conf
+    - sudo a2enmod rewrite
+    - sudo service apache2 restart
+
+database:
+  override:
+    - ./console db:schema
+
+test:
+  pre:
+    - chmod -R 777 var/cache
+  override:
+    - bin/behat
