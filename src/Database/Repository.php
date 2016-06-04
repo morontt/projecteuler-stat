@@ -8,8 +8,8 @@
 
 namespace MttProjecteuler\Database;
 
-use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
+use MttProjecteuler\Model\Solution;
 use MttProjecteuler\Model\User;
 
 class Repository
@@ -36,23 +36,63 @@ class Repository
     {
         $sql = "SELECT id, username, salt, password_hash, created_at FROM users WHERE username = :username";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue('username', $username);
+        $stmt->bindValue('username', $username, \PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetch();
 
         if ($result) {
-            $user = new User();
-            $user
-                ->setId($result['id'])
-                ->setUsername($result['username'])
-                ->setSalt($result['salt'])
-                ->setPassword($result['password_hash'])
-                ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $result['created_at']))
-            ;
+            $entity = new User();
+            $entity->populate($result);
         } else {
-            $user = null;
+            $entity = null;
         }
 
-        return $user;
+        return $entity;
+    }
+
+    /**
+     * @param int $id
+     * @return Solution|null
+     */
+    public function findSolution($id)
+    {
+        $sql = "SELECT id, problem_number, lang_id, execution_time, deviation_time, completed, created_by, created_at, updated_at FROM solutions WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if ($result) {
+            $entity = new Solution();
+            $entity->populate($result);
+        } else {
+            $entity = null;
+        }
+
+        return $entity;
+    }
+
+    /**
+     * @return Solution[]
+     */
+    public function findAllSolutions()
+    {
+        $sql = <<<SQL
+SELECT id, problem_number, lang_id, execution_time, deviation_time, completed, created_by, created_at, updated_at
+FROM solutions ORDER BY id DESC
+SQL;
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return array_map(
+            function (array $data) {
+                $entity = new Solution();
+                $entity->populate($data);
+
+                return $entity;
+            },
+            $results
+        );
     }
 }

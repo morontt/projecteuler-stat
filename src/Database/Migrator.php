@@ -68,8 +68,12 @@ class Migrator
         $languagesTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
         $languagesTable->addColumn('name', 'string', ['length' => 32]);
         $languagesTable->addColumn('comment', 'string', ['length' => 255]);
+        $languagesTable->addColumn('created_by', 'integer', ['unsigned' => true,]);
         $languagesTable->addColumn('created_at', 'datetime');
+        $languagesTable->addColumn('updated_at', 'datetime');
         $languagesTable->setPrimaryKey(['id']);
+
+        $languagesTable->addForeignKeyConstraint($userTable, ['created_by'], ['id'], ['onDelete' => 'CASCADE']);
 
         $solutionsTable = $schema->createTable('solutions');
         $solutionsTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
@@ -78,10 +82,13 @@ class Migrator
         $solutionsTable->addColumn('execution_time', 'float');
         $solutionsTable->addColumn('deviation_time', 'float');
         $solutionsTable->addColumn('completed', 'datetime');
+        $solutionsTable->addColumn('created_by', 'integer', ['unsigned' => true,]);
         $solutionsTable->addColumn('created_at', 'datetime');
+        $solutionsTable->addColumn('updated_at', 'datetime');
         $solutionsTable->setPrimaryKey(['id']);
 
         $solutionsTable->addForeignKeyConstraint($languagesTable, ['lang_id'], ['id'], ['onDelete' => 'SET NULL']);
+        $solutionsTable->addForeignKeyConstraint($userTable, ['created_by'], ['id'], ['onDelete' => 'CASCADE']);
 
         return $schema;
     }

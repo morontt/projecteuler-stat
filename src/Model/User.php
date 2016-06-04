@@ -46,6 +46,36 @@ class User implements UserInterface
     }
 
     /**
+     * @param array $data
+     */
+    public function populate(array $data)
+    {
+        if (isset($data['id'])) {
+            $this->setId($data['id']);
+        }
+
+        $this
+            ->setUsername($data['username'])
+            ->setSalt($data['salt'])
+            ->setPassword($data['password_hash'])
+            ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
+        ;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'username' => $this->getUsername(),
+            'salt' => $this->getSalt(),
+            'password_hash' => $this->getPassword(),
+            'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+        ];
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -59,7 +89,7 @@ class User implements UserInterface
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int)$id;
 
         return $this;
     }

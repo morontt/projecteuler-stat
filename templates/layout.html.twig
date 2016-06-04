@@ -33,14 +33,21 @@
             <a class="navbar-brand" href="{{ path('homepage') }}">ProjectEuler-stat</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li {% if global.request.get('_route') == 'about' %}class="active"{% endif %}>
-                    <a href="{{ path('about') }}" title="О проекте">Инфо</a>
-                </li>
-            </ul>
+            {% block navbar %}
+                <ul class="nav navbar-nav">
+                    <li {% if global.request.get('_route') == 'about' %}class="active"{% endif %}>
+                        <a href="{{ path('about') }}" title="О проекте">Инфо</a>
+                    </li>
+                </ul>
+            {% endblock %}
 
             <ul class="nav navbar-nav navbar-right">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li {% if global.request.get('_route') == 'admin_dashboard' %}class="active"{% endif %}>
+                        <a href="{{ path('admin_dashboard') }}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Админка
+                        </a>
+                    </li>
                     <li>
                         <p class="navbar-text">
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ global.user.username }}
@@ -76,10 +83,12 @@
     </div>
 </footer>
 
+{% block javascripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
+{% endblock %}
 </body>
 </html>

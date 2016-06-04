@@ -1,0 +1,49 @@
+{% extends "admin.html.twig" %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            <a href="{{ path('admin_solutions_new') }}" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus-sign"></i>
+                <span>Создать</span>
+            </a>
+        </div>
+        <h1>Решения</h1>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Number</th>
+                <th>Execution</th>
+                <th>Deviation</th>
+                <th>Completed</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>
+                    <td>{{ entity.problemNumber }}</td>
+                    <td>{{ entity.executionTime }}</td>
+                    <td>{{ entity.deviationTime }}</td>
+                    <td>{{ entity.completed|date('d M Y, H:i') }}</td>
+                    <td>{{ entity.createdAt|date('d M Y, H:i') }}</td>
+                    <td>
+                        <a class="btn btn-default"
+                           href="{{ path('admin_solutions_edit', {'entity': entity.id}) }}"
+                           role="button">Редактировать</a>
+                        <form action="{{ path('admin_solutions_delete', {'entity': entity.id}) }}"
+                              method="post"
+                              class="form-delete">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input class="btn btn-default" type="submit" value="Удалить">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

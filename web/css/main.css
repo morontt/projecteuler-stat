@@ -108,3 +108,15 @@ body {
 .form-signin input {
     margin-bottom: 10px;
 }
+
+.actions-menu {
+    float: right;
+}
+
+.btn {
+    text-transform: uppercase;
+}
+
+.form-delete {
+    display: inline;
+}

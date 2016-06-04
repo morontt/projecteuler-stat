@@ -41,18 +41,18 @@ class UserCreate extends BaseCommand
         $encoder = $this->container['security.encoder_factory']->getEncoder($user);
         $passwordHash = $encoder->encodePassword($password, $user->getSalt());
 
+        $user
+            ->setUsername($username)
+            ->setPassword($passwordHash)
+        ;
+
         /* @var \Doctrine\DBAL\Connection */
         $db = $this->container['db'];
 
         try {
             $db->insert(
                 'users',
-                [
-                    'username' => $username,
-                    'salt' => $user->getSalt(),
-                    'password_hash' => $passwordHash,
-                    'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
-                ]
+                $user->toArray()
             );
 
             $output->writeln('<info>User <comment>' . $username . '</comment> created</info>');

@@ -1,10 +1,13 @@
 <?php
 
+use MttProjecteuler\Route\SolutionConverter;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/* @var \Silex\Application $app */
+$app['converter.solution'] = function ($app) {
+    return new SolutionConverter($app['pe_database.repository']);
+};
 
 $app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
     ->bind('homepage');
@@ -16,8 +19,32 @@ $app->get('/login', 'MttProjecteuler\\Controller\\SecurityController::login')
     ->bind('login');
 
 $app->mount('/area_51', function (ControllerCollection $admin) {
-    $admin->get('/', function () {
-        return 'Secured area';
+    $admin->get('/', 'MttProjecteuler\\Controller\\AdminController::dashboard')
+        ->bind('admin_dashboard');
+
+    $admin->mount('/solutions', function (ControllerCollection $sol) {
+        $sol->get('/', 'MttProjecteuler\\Controller\\Admin\\SolutionController::index')
+            ->bind('admin_solutions_index');
+
+        $sol->match('/create', 'MttProjecteuler\\Controller\\Admin\\SolutionController::create')
+            ->method('GET|POST')
+            ->bind('admin_solutions_new');
+
+        $sol->match('/edit/{entity}', 'MttProjecteuler\\Controller\\Admin\\SolutionController::edit')
+            ->method('GET|POST')
+            ->assert('entity', '\d+')
+            ->convert('entity', 'converter.solution:convert')
+            ->bind('admin_solutions_edit');
+
+        $sol->delete('/delete/{entity}', 'MttProjecteuler\\Controller\\Admin\\SolutionController::delete')
+            ->assert('entity', '\d+')
+            ->convert('entity', 'converter.solution:convert')
+            ->bind('admin_solutions_delete');
+    });
+
+    $admin->mount('/languages', function (ControllerCollection $lang) {
+        $lang->get('/', 'MttProjecteuler\\Controller\\Admin\\LangController::index')
+            ->bind('admin_languages_index');
     });
 });
 

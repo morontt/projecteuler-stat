@@ -1,0 +1,23 @@
+{% extends "layout.html.twig" %}
+
+{% block navbar %}
+    <ul class="nav navbar-nav">
+        <li {% if global.request.get('_route') == 'admin_solutions_index' %}class="active"{% endif %}>
+            <a href="{{ path('admin_solutions_index') }}">Решения</a>
+        </li>
+        <li {% if global.request.get('_route') == 'admin_languages_index' %}class="active"{% endif %}>
+            <a href="{{ path('admin_languages_index') }}">ЯП</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('form.form-delete').on('submit', function () {
+                return confirm('Уверены?');
+            });
+        });
+    </script>
+{% endblock %}

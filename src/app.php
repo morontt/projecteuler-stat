@@ -6,11 +6,13 @@ use MttProjecteuler\Database\UserProvider;
 use Silex\Application;
 use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
+use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 $app = new Application();
@@ -75,5 +77,12 @@ $app['security.default_encoder'] = function () {
 $app['security.access_rules'] = [
     ['^/area_51', 'ROLE_USER'],
 ];
+
+$app->register(new FormServiceProvider());
+$app->register(new ValidatorServiceProvider());
+$app->register(new Silex\Provider\LocaleServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), [
+    'locale_fallbacks' => ['ru'],
+]);
 
 return $app;
