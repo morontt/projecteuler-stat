@@ -5,5 +5,5 @@ Feature: pages
     Given I am on homepage
     Then I should see "Sticky footer"
 
-    When I follow "About"
+    When I follow "Инфо"
     Then I should see "О проекте"

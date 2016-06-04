@@ -13,8 +13,6 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
           crossorigin="anonymous"
           rel="stylesheet">
-    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-    <link href="/css/sticky-footer-navbar.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
@@ -36,11 +34,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li {% if global.request.get('_route') == 'homepage' %}class="active"{% endif %}>
-                    <a href="{{ path('homepage') }}">Home</a>
-                </li>
                 <li {% if global.request.get('_route') == 'about' %}class="active"{% endif %}>
-                    <a href="{{ path('about') }}">About</a>
+                    <a href="{{ path('about') }}" title="О проекте">Инфо</a>
                 </li>
             </ul>
 
@@ -52,13 +47,13 @@
                         </p>
                     </li>
                     <li {% if global.request.get('_route') == 'login' %}class="active"{% endif %}>
-                        <a href="{{ path('logout') }}">
+                        <a href="{{ path('logout') }}" title="Выход">
                             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
                         </a>
                     </li>
                 {% else %}
                     <li {% if global.request.get('_route') == 'login' %}class="active"{% endif %}>
-                        <a href="{{ path('login') }}">
+                        <a href="{{ path('login') }}" title="Вход">
                             <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </a>
                     </li>
@@ -74,7 +69,10 @@
 
 <footer class="footer">
     <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <p class="text-muted">
+            Собрано из <a href="http://silex.sensiolabs.org">Silex</a> и <a href="http://twig.sensiolabs.org">Twig</a>.
+            &copy; 2016 <a href="https://morontt.info">morontt</a>
+        </p>
     </div>
 </footer>
 

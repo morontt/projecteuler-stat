@@ -12,7 +12,7 @@ $app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
 $app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
     ->bind('about');
 
-$app->get('/login', 'MttProjecteuler\\Controller\\WebController::login')
+$app->get('/login', 'MttProjecteuler\\Controller\\SecurityController::login')
     ->bind('login');
 
 $app->mount('/area_51', function (ControllerCollection $admin) {

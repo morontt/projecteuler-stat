@@ -19,7 +19,7 @@ class WebController
      */
     public function index(Application $app)
     {
-        return $app['twig']->render('index.html.twig', []);
+        return $app['twig']->render('web/index.html.twig', []);
     }
 
     /**
@@ -28,22 +28,6 @@ class WebController
      */
     public function about(Application $app)
     {
-        return $app['twig']->render('about.html.twig', []);
-    }
-
-    /**
-     * @param Application $app
-     * @param Request $request
-     * @return string
-     */
-    public function login(Application $app, Request $request)
-    {
-        $token = $app['csrf.token_manager']->refreshToken('authenticate');
-
-        return $app['twig']->render('login.html.twig', [
-            'error' => $app['security.last_error']($request),
-            'last_username' => $app['session']->get('_security.last_username'),
-            'csrf_token' => $token,
-        ]);
+        return $app['twig']->render('web/about.html.twig', []);
     }
 }
