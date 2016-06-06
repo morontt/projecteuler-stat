@@ -2,7 +2,50 @@
 
 {% block content %}
     <div class="page-header">
+        <div class="actions-menu">
+            <a href="{{ path('admin_languages_new') }}" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus-sign"></i>
+                <span>Создать</span>
+            </a>
+        </div>
         <h1>Языки программирования</h1>
     </div>
-    <p class="lead">...</p>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Comment</th>
+            <th>Created</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.comment }}</td>
+                <td>{{ entity.createdAt|date('d M Y, H:i') }}</td>
+                <td>
+                    <a class="btn btn-default"
+                       href="{{ path('admin_languages_edit', {'entity': entity.id}) }}"
+                       role="button">Редактировать</a>
+                    <form action="{{ path('admin_languages_delete', {'entity': entity.id}) }}"
+                          method="post"
+                          class="form-delete">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input class="btn btn-default" type="submit" value="Удалить">
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" class="text-center">
+                    Пока ничего нет
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -2,26 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: morontt
- * Date: 05.06.16
- * Time: 18:58
+ * Date: 06.06.16
+ * Time: 23:24
  */
 
 namespace MttProjecteuler\Model;
 
 use Carbon\Carbon;
 
-class Solution extends AbstractModel
+class Lang extends AbstractModel
 {
     /**
      * @var array
      */
     public static $fields = [
         'id',
-        'problem_number',
-        'lang_id',
-        'execution_time',
-        'deviation_time',
-        'completed',
+        'name',
+        'comment',
         'created_by',
         'created_at',
         'updated_at',
@@ -33,29 +30,14 @@ class Solution extends AbstractModel
     protected $id;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $problemNumber;
+    protected $name;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $langId;
-
-    /**
-     * @var double
-     */
-    protected $executionTime;
-
-    /**
-     * @var double
-     */
-    protected $deviationTime;
-
-    /**
-     * @var Carbon
-     */
-    protected $completed;
+    protected $comment;
 
     /**
      * @var int
@@ -89,11 +71,8 @@ class Solution extends AbstractModel
         }
 
         $this
-            ->setProblemNumber($data['problem_number'])
-            ->setLangId($data['lang_id'])
-            ->setExecutionTime($data['execution_time'])
-            ->setDeviationTime($data['deviation_time'])
-            ->setCompleted(Carbon::createFromFormat('Y-m-d H:i:s', $data['completed']))
+            ->setName($data['name'])
+            ->setComment($data['comment'])
             ->setCreatedBy($data['created_by'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
             ->setUpdatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['updated_at']))
@@ -106,11 +85,8 @@ class Solution extends AbstractModel
     public function toArray()
     {
         return [
-            'problem_number' => $this->getProblemNumber(),
-            'lang_id' => $this->getLangId(),
-            'execution_time' => $this->getExecutionTime(),
-            'deviation_time' => $this->getDeviationTime(),
-            'completed' => $this->getCompleted()->format('Y-m-d H:i:s'),
+            'name' => $this->getName(),
+            'comment' => $this->getComment(),
             'created_by' => $this->getCreatedBy(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
@@ -137,96 +113,39 @@ class Solution extends AbstractModel
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getProblemNumber()
+    public function getName()
     {
-        return $this->problemNumber;
+        return $this->name;
     }
 
     /**
-     * @param int $problemNumber
+     * @param string $name
      * @return $this
      */
-    public function setProblemNumber($problemNumber)
+    public function setName($name)
     {
-        $this->problemNumber = (int)$problemNumber;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getLangId()
+    public function getComment()
     {
-        return $this->langId;
+        return $this->comment;
     }
 
     /**
-     * @param int $langId
+     * @param string $comment
      * @return $this
      */
-    public function setLangId($langId)
+    public function setComment($comment)
     {
-        $this->langId = $langId ? (int)$langId : null;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getExecutionTime()
-    {
-        return $this->executionTime;
-    }
-
-    /**
-     * @param float $executionTime
-     * @return $this
-     */
-    public function setExecutionTime($executionTime)
-    {
-        $this->executionTime = (double)$executionTime;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDeviationTime()
-    {
-        return $this->deviationTime;
-    }
-
-    /**
-     * @param float $deviationTime
-     * @return $this
-     */
-    public function setDeviationTime($deviationTime)
-    {
-        $this->deviationTime = (double)$deviationTime;
-
-        return $this;
-    }
-
-    /**
-     * @return Carbon
-     */
-    public function getCompleted()
-    {
-        return $this->completed;
-    }
-
-    /**
-     * @param \DateTime $completed
-     * @return $this
-     */
-    public function setCompleted(\DateTime $completed)
-    {
-        $this->completed = $completed;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -245,7 +164,7 @@ class Solution extends AbstractModel
      */
     public function setCreatedBy($createdBy)
     {
-        $this->createdBy = (int)$createdBy;
+        $this->createdBy = $createdBy;
 
         return $this;
     }

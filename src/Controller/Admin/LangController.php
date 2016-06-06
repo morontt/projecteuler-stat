@@ -8,6 +8,8 @@
 
 namespace MttProjecteuler\Controller\Admin;
 
+use Carbon\Carbon;
+use MttProjecteuler\Model\Lang;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,6 +21,77 @@ class LangController
      */
     public function index(Application $app)
     {
-        return $app['twig']->render('admin/lang/index.html.twig', []);
+        $entities = $app['pe_database.repository']->findAllLanguages();
+
+        return $app['twig']->render('admin/lang/index.html.twig', compact('entities'));
+    }
+
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function create(Application $app, Request $request)
+    {
+        $entity = new Lang();
+        $entity->setCreatedBy($app['user']->getId());
+
+        $form = $app['form.factory']->create('MttProjecteuler\Form\LangType', $entity);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $app['db']->insert('languages', $entity->toArray());
+
+            return $app->redirect($app['url_generator']->generate('admin_languages_index'));
+        }
+
+        return $app['twig']
+            ->render(
+                'admin/lang/edit.html.twig',
+                [
+                    'entity' => $entity,
+                    'form' => $form->createView(),
+                ]
+            );
+    }
+
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @param Lang $entity
+     * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function edit(Application $app, Request $request, Lang $entity)
+    {
+        $form = $app['form.factory']->create('MttProjecteuler\Form\LangType', $entity);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $entity->setUpdatedAt(new Carbon());
+            $app['db']->update('languages', $entity->toArray(), ['id' => $entity->getId()]);
+
+            return $app->redirect($app['url_generator']->generate('admin_languages_index'));
+        }
+
+        return $app['twig']
+            ->render(
+                'admin/lang/edit.html.twig',
+                [
+                    'entity' => $entity,
+                    'form' => $form->createView(),
+                ]
+            );
+    }
+
+    /**
+     * @param Application $app
+     * @param Lang $entity
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function delete(Application $app, Lang $entity)
+    {
+        $app['db']->delete('languages', ['id' => $entity->getId()]);
+
+        return $app->redirect($app['url_generator']->generate('admin_languages_index'));
     }
 }

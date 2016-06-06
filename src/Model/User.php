@@ -11,8 +11,19 @@ namespace MttProjecteuler\Model;
 use Carbon\Carbon;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface
+class User extends AbstractModel implements UserInterface
 {
+    /**
+     * @var array
+     */
+    public static $fields = [
+        'id',
+        'username',
+        'salt',
+        'password_hash',
+        'created_at',
+    ];
+
     /**
      * @var int
      */

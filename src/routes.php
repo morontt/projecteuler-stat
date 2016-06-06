@@ -1,5 +1,6 @@
 <?php
 
+use MttProjecteuler\Route\LangConverter;
 use MttProjecteuler\Route\SolutionConverter;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
@@ -7,6 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 $app['converter.solution'] = function ($app) {
     return new SolutionConverter($app['pe_database.repository']);
+};
+
+$app['converter.lang'] = function ($app) {
+    return new LangConverter($app['pe_database.repository']);
 };
 
 $app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
@@ -45,6 +50,21 @@ $app->mount('/area_51', function (ControllerCollection $admin) {
     $admin->mount('/languages', function (ControllerCollection $lang) {
         $lang->get('/', 'MttProjecteuler\\Controller\\Admin\\LangController::index')
             ->bind('admin_languages_index');
+
+        $lang->match('/create', 'MttProjecteuler\\Controller\\Admin\\LangController::create')
+            ->method('GET|POST')
+            ->bind('admin_languages_new');
+
+        $lang->match('/edit/{entity}', 'MttProjecteuler\\Controller\\Admin\\LangController::edit')
+            ->method('GET|POST')
+            ->assert('entity', '\d+')
+            ->convert('entity', 'converter.lang:convert')
+            ->bind('admin_languages_edit');
+
+        $lang->delete('/delete/{entity}', 'MttProjecteuler\\Controller\\Admin\\LangController::delete')
+            ->assert('entity', '\d+')
+            ->convert('entity', 'converter.lang:convert')
+            ->bind('admin_languages_delete');
     });
 });
 

@@ -2,10 +2,10 @@
 
 {% block navbar %}
     <ul class="nav navbar-nav">
-        <li {% if global.request.get('_route') == 'admin_solutions_index' %}class="active"{% endif %}>
+        <li {% if global.request.get('_route') in ['admin_solutions_index', 'admin_solutions_new', 'admin_solutions_edit'] %}class="active"{% endif %}>
             <a href="{{ path('admin_solutions_index') }}">Решения</a>
         </li>
-        <li {% if global.request.get('_route') == 'admin_languages_index' %}class="active"{% endif %}>
+        <li {% if global.request.get('_route') in ['admin_languages_index', 'admin_languages_new', 'admin_languages_edit'] %}class="active"{% endif %}>
             <a href="{{ path('admin_languages_index') }}">ЯП</a>
         </li>
     </ul>
