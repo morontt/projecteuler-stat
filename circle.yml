@@ -26,6 +26,7 @@ dependencies:
 database:
   override:
     - ./console db:schema
+    - ./console fixtures:load
 
 test:
   pre:

@@ -7,8 +7,10 @@ use Silex\Application;
 use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -80,8 +82,8 @@ $app['security.access_rules'] = [
 
 $app->register(new FormServiceProvider());
 $app->register(new ValidatorServiceProvider());
-$app->register(new Silex\Provider\LocaleServiceProvider());
-$app->register(new Silex\Provider\TranslationServiceProvider(), [
+$app->register(new LocaleServiceProvider());
+$app->register(new TranslationServiceProvider(), [
     'locale_fallbacks' => ['ru'],
 ]);
 

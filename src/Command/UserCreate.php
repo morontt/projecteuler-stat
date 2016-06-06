@@ -50,11 +50,7 @@ class UserCreate extends BaseCommand
         $db = $this->container['db'];
 
         try {
-            $db->insert(
-                'users',
-                $user->toArray()
-            );
-
+            $db->insert('users', $user->toArray());
             $output->writeln('<info>User <comment>' . $username . '</comment> created</info>');
         } catch (UniqueConstraintViolationException $e) {
             $output->writeln('<error>User ' . $username . ' already exists :(</error>');
