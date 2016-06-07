@@ -7,3 +7,4 @@ Feature: pages
 
     When I follow "Инфо"
     Then I should see "О проекте"
+    And I should not see "Админка"
