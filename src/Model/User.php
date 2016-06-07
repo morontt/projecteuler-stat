@@ -19,6 +19,7 @@ class User extends AbstractModel implements UserInterface
     public static $fields = [
         'id',
         'username',
+        'email',
         'salt',
         'password_hash',
         'created_at',
@@ -33,6 +34,11 @@ class User extends AbstractModel implements UserInterface
      * @var string
      */
     protected $username;
+
+    /**
+     * @var string
+     */
+    protected $email;
 
     /**
      * @var string
@@ -67,6 +73,7 @@ class User extends AbstractModel implements UserInterface
 
         $this
             ->setUsername($data['username'])
+            ->setEmail($data['email'])
             ->setSalt($data['salt'])
             ->setPassword($data['password_hash'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
@@ -80,6 +87,7 @@ class User extends AbstractModel implements UserInterface
     {
         return [
             'username' => $this->getUsername(),
+            'email' => $this->getEmail(),
             'salt' => $this->getSalt(),
             'password_hash' => $this->getPassword(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
@@ -120,6 +128,25 @@ class User extends AbstractModel implements UserInterface
     public function setUsername($username)
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }

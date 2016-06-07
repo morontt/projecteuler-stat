@@ -9,7 +9,7 @@
 namespace MttProjecteuler\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,12 +22,18 @@ class SolutionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $repository = $options['repository'];
+        $choices = [
+            'Отсутствует в списке...' => '',
+        ];
+
+        $choices = array_merge($choices, $repository->getLanguageChoices());
+
         $builder
             ->add('problemNumber')
-            ->add('langId')
+            ->add('langId', ChoiceType::class, ['choices' => $choices,])
             ->add('executionTime')
             ->add('deviationTime')
-            ->add('completed', DateTimeType::class)
             ->add('submit', SubmitType::class)
         ;
     }
@@ -37,8 +43,16 @@ class SolutionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => 'MttProjecteuler\Model\Solution',
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => 'MttProjecteuler\Model\Solution',
+            ])
+            ->setRequired([
+                'repository',
+            ])
+            ->setAllowedTypes(
+                'repository', 'MttProjecteuler\Database\Repository'
+            )
+        ;
     }
 }

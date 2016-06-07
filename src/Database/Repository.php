@@ -146,4 +146,24 @@ class Repository
             $results
         );
     }
+
+    /**
+     * @return array
+     */
+    public function getLanguageChoices()
+    {
+        $fields = Lang::getFieldsQueryString();
+
+        $sql = "SELECT {$fields} FROM `languages` ORDER BY `name` ASC, `comment` ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $choices = [];
+        foreach ($results as $item) {
+            $choices[sprintf('%s (%s)', $item['name'], $item['comment'])] = $item['id'];
+        }
+
+        return $choices;
+    }
 }

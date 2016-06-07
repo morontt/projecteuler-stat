@@ -36,7 +36,13 @@ class SolutionController
         $entity = new Solution();
         $entity->setCreatedBy($app['user']->getId());
 
-        $form = $app['form.factory']->create('MttProjecteuler\Form\SolutionType', $entity);
+        $form = $app['form.factory']->create(
+            'MttProjecteuler\Form\SolutionType',
+            $entity,
+            [
+                'repository' => $app['pe_database.repository'],
+            ]
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -63,7 +69,13 @@ class SolutionController
      */
     public function edit(Application $app, Request $request, Solution $entity)
     {
-        $form = $app['form.factory']->create('MttProjecteuler\Form\SolutionType', $entity);
+        $form = $app['form.factory']->create(
+            'MttProjecteuler\Form\SolutionType',
+            $entity,
+            [
+                'repository' => $app['pe_database.repository'],
+            ]
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {

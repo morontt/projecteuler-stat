@@ -22,6 +22,7 @@ class UserCreate extends BaseCommand
             ->setName('user:create')
             ->setDescription('Create user')
             ->addArgument('username', InputArgument::REQUIRED)
+            ->addArgument('email', InputArgument::REQUIRED)
             ->addArgument('password', InputArgument::REQUIRED)
         ;
     }
@@ -34,15 +35,15 @@ class UserCreate extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');
-        $password = $input->getArgument('password');
 
         $user = new User();
         /* @var \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface $encoder */
         $encoder = $this->container['security.encoder_factory']->getEncoder($user);
-        $passwordHash = $encoder->encodePassword($password, $user->getSalt());
+        $passwordHash = $encoder->encodePassword($input->getArgument('password'), $user->getSalt());
 
         $user
             ->setUsername($username)
+            ->setEmail($input->getArgument('email'))
             ->setPassword($passwordHash)
         ;
 

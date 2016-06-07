@@ -17,7 +17,6 @@
                 <th>Number</th>
                 <th>Execution</th>
                 <th>Deviation</th>
-                <th>Completed</th>
                 <th>Created</th>
                 <th></th>
             </tr>
@@ -29,7 +28,6 @@
                     <td>{{ entity.problemNumber }}</td>
                     <td>{{ entity.executionTime }}</td>
                     <td>{{ entity.deviationTime }}</td>
-                    <td>{{ entity.completed|date('d M Y, H:i') }}</td>
                     <td>{{ entity.createdAt|date('d M Y, H:i') }}</td>
                     <td>
                         <a class="btn btn-default"
@@ -45,7 +43,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7" class="text-center">
+                    <td colspan="6" class="text-center">
                         Пока ничего нет
                     </td>
                 </tr>

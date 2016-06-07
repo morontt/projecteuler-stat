@@ -21,7 +21,6 @@ class Solution extends AbstractModel
         'lang_id',
         'execution_time',
         'deviation_time',
-        'completed',
         'created_by',
         'created_at',
         'updated_at',
@@ -51,11 +50,6 @@ class Solution extends AbstractModel
      * @var double
      */
     protected $deviationTime;
-
-    /**
-     * @var Carbon
-     */
-    protected $completed;
 
     /**
      * @var int
@@ -93,7 +87,6 @@ class Solution extends AbstractModel
             ->setLangId($data['lang_id'])
             ->setExecutionTime($data['execution_time'])
             ->setDeviationTime($data['deviation_time'])
-            ->setCompleted(Carbon::createFromFormat('Y-m-d H:i:s', $data['completed']))
             ->setCreatedBy($data['created_by'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
             ->setUpdatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['updated_at']))
@@ -110,7 +103,6 @@ class Solution extends AbstractModel
             'lang_id' => $this->getLangId(),
             'execution_time' => $this->getExecutionTime(),
             'deviation_time' => $this->getDeviationTime(),
-            'completed' => $this->getCompleted()->format('Y-m-d H:i:s'),
             'created_by' => $this->getCreatedBy(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
@@ -208,25 +200,6 @@ class Solution extends AbstractModel
     public function setDeviationTime($deviationTime)
     {
         $this->deviationTime = (double)$deviationTime;
-
-        return $this;
-    }
-
-    /**
-     * @return Carbon
-     */
-    public function getCompleted()
-    {
-        return $this->completed;
-    }
-
-    /**
-     * @param \DateTime $completed
-     * @return $this
-     */
-    public function setCompleted(\DateTime $completed)
-    {
-        $this->completed = $completed;
 
         return $this;
     }

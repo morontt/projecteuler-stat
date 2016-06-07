@@ -58,11 +58,13 @@ class Migrator
         $userTable = $schema->createTable('users');
         $userTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
         $userTable->addColumn('username', 'string', ['length' => 32,]);
+        $userTable->addColumn('email', 'string', ['length' => 64,]);
         $userTable->addColumn('salt', 'string', ['length' => 20,]);
         $userTable->addColumn('password_hash', 'string', ['length' => 64]);
         $userTable->addColumn('created_at', 'datetime');
         $userTable->setPrimaryKey(['id']);
         $userTable->addUniqueIndex(['username']);
+        $userTable->addUniqueIndex(['email']);
 
         $languagesTable = $schema->createTable('languages');
         $languagesTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
@@ -81,7 +83,6 @@ class Migrator
         $solutionsTable->addColumn('lang_id', 'integer', ['notnull' => false, 'unsigned' => true,]);
         $solutionsTable->addColumn('execution_time', 'float');
         $solutionsTable->addColumn('deviation_time', 'float');
-        $solutionsTable->addColumn('completed', 'datetime');
         $solutionsTable->addColumn('created_by', 'integer', ['unsigned' => true,]);
         $solutionsTable->addColumn('created_at', 'datetime');
         $solutionsTable->addColumn('updated_at', 'datetime');
