@@ -41,6 +41,7 @@ class LangController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $app['db']->insert('languages', $entity->toArray());
+            $app['session']->getFlashBag()->add('success', sprintf('Язык %s создан', $entity));
 
             return $app->redirect($app['url_generator']->generate('admin_languages_index'));
         }
@@ -69,6 +70,7 @@ class LangController
         if ($form->isValid()) {
             $entity->setUpdatedAt(new Carbon());
             $app['db']->update('languages', $entity->toArray(), ['id' => $entity->getId()]);
+            $app['session']->getFlashBag()->add('success', sprintf('Язык %s отредактирован', $entity));
 
             return $app->redirect($app['url_generator']->generate('admin_languages_index'));
         }
@@ -91,6 +93,7 @@ class LangController
     public function delete(Application $app, Lang $entity)
     {
         $app['db']->delete('languages', ['id' => $entity->getId()]);
+        $app['session']->getFlashBag()->add('success', sprintf('Язык %s удалён', $entity));
 
         return $app->redirect($app['url_generator']->generate('admin_languages_index'));
     }

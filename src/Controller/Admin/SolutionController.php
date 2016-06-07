@@ -47,6 +47,7 @@ class SolutionController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $app['db']->insert('solutions', $entity->toArray());
+            $app['session']->getFlashBag()->add('success', 'Решение создано');
 
             return $app->redirect($app['url_generator']->generate('admin_solutions_index'));
         }
@@ -81,6 +82,7 @@ class SolutionController
         if ($form->isValid()) {
             $entity->setUpdatedAt(new Carbon());
             $app['db']->update('solutions', $entity->toArray(), ['id' => $entity->getId()]);
+            $app['session']->getFlashBag()->add('success', sprintf('Решение ID: %s отредактировано', $entity->getId()));
 
             return $app->redirect($app['url_generator']->generate('admin_solutions_index'));
         }
@@ -103,6 +105,7 @@ class SolutionController
     public function delete(Application $app, Solution $entity)
     {
         $app['db']->delete('solutions', ['id' => $entity->getId()]);
+        $app['session']->getFlashBag()->add('success', sprintf('Решение ID: %s удалено', $entity->getId()));
 
         return $app->redirect($app['url_generator']->generate('admin_solutions_index'));
     }

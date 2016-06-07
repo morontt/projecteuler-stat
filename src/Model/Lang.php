@@ -102,6 +102,14 @@ class Lang extends AbstractModel
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s (%s)', $this->getName(), $this->getComment());
+    }
+
+    /**
      * @param int $id
      * @return $this
      */

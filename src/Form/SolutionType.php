@@ -31,7 +31,7 @@ class SolutionType extends AbstractType
 
         $builder
             ->add('problemNumber')
-            ->add('langId', ChoiceType::class, ['choices' => $choices,])
+            ->add('langId', ChoiceType::class, ['choices' => $choices, 'required' => false,])
             ->add('executionTime')
             ->add('deviationTime')
             ->add('submit', SubmitType::class)
