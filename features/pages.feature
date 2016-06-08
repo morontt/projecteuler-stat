@@ -3,7 +3,7 @@ Feature: pages
 
   Scenario: startpage
     Given I am on homepage
-    Then I should see "Sticky footer"
+    Then I should see "Статистика по решениям задач"
 
     When I follow "Инфо"
     Then I should see "О проекте"

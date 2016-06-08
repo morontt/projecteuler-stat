@@ -8,6 +8,7 @@
 
 namespace MttProjecteuler\Database;
 
+use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use MttProjecteuler\Model\Lang;
 use MttProjecteuler\Model\Solution;
@@ -15,6 +16,8 @@ use MttProjecteuler\Model\User;
 
 class Repository
 {
+    const LIMIT = 24;
+
     /**
      * @var Connection
      */
@@ -95,6 +98,37 @@ class Repository
                 $entity->populate($data);
 
                 return $entity;
+            },
+            $results
+        );
+    }
+
+    /**
+     * @param int $page
+     * @return array
+     */
+    public function getResultsForStartpage($page)
+    {
+        $sql = <<<SQL
+SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
+  `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`
+FROM `solutions` AS `s`
+INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
+LEFT JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
+ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset
+SQL;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('limit', self::LIMIT, \PDO::PARAM_INT);
+        $stmt->bindValue('offset', ($page - 1) * self::LIMIT, \PDO::PARAM_INT);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return array_map(
+            function (array $data) {
+                $data['created'] = Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']);
+
+                return $data;
             },
             $results
         );

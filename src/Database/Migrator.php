@@ -59,6 +59,7 @@ class Migrator
         $userTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
         $userTable->addColumn('username', 'string', ['length' => 32,]);
         $userTable->addColumn('email', 'string', ['length' => 64,]);
+        $userTable->addColumn('email_hash', 'string', ['length' => 32,]);
         $userTable->addColumn('salt', 'string', ['length' => 20,]);
         $userTable->addColumn('password_hash', 'string', ['length' => 64]);
         $userTable->addColumn('created_at', 'datetime');

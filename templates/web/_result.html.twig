@@ -1,0 +1,20 @@
+<div class="result-row clearfix">
+    <div class="col1">
+        <a href="#">
+            <img src="//www.gravatar.com/avatar/{{ result.email_hash }}?d=monsterid&s=120"
+                 width="120" height="120"
+                 title="{{ result.username }}"
+                 class="avatar" alt="avatar"/>
+        </a>
+    </div>
+    <div class="col2">
+        <strong>#{{ result.id }}</strong>
+        <span class="time">{{ result.created|date('d.m.Y H:i') }}</span>
+        <hr/>
+        <a href="#">Проблема №{{ result.problem_number }}</a>
+        <div class="res">Время: {{ result.execution_time }} &plusmn; {{ result.deviation_time }} сек.</div>
+    </div>
+    {% if result.lang_name %}
+        <div class="lang">{{ result.lang_name }} ({{ result.lang_comment }})</div>
+    {% endif %}
+</div>

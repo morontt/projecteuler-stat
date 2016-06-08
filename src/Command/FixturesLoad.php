@@ -39,6 +39,7 @@ class FixturesLoad extends BaseCommand
         $user
             ->setUsername('admin')
             ->setEmail('admin@example.org')
+            ->setEmailHash(md5(strtolower('admin@example.org')))
             ->setPassword($encoder->encodePassword('test', $user->getSalt()))
         ;
 

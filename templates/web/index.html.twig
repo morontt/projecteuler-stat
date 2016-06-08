@@ -4,8 +4,27 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Sticky footer with fixed navbar</h1>
+        <h1>Статистика по решениям задач</h1>
     </div>
-    <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body > .container</code>.</p>
-    <p>Back to <a href="/sticky-footer">the default sticky footer</a> minus the navbar.</p>
+    <div class="startpage">
+        <p class="lead">Результаты решений задач с <a href="https://projecteuler.net/">Project Euler</a>,
+            прокрученные на <strong>Raspberry Pi 2</strong>.
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {% for result in results %}
+                {% if loop.index is odd %}
+                    {{ include('web/_result.html.twig') }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            {% for result in results %}
+                {% if loop.index is even %}
+                    {{ include('web/_result.html.twig') }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

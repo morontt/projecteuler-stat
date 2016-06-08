@@ -9,17 +9,19 @@
 namespace MttProjecteuler\Controller;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
 
 class WebController
 {
     /**
      * @param Application $app
+     * @param string $page
      * @return string
      */
-    public function index(Application $app)
+    public function index(Application $app, $page)
     {
-        return $app['twig']->render('web/index.html.twig', []);
+        $results = $app['pe_database.repository']->getResultsForStartpage((int)$page);
+
+        return $app['twig']->render('web/index.html.twig', compact('results'));
     }
 
     /**

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,500&subset=latin,cyrillic');
+
 /*!
  * IE10 viewport hack for Surface/desktop Windows 8 bug
  * Copyright 2014-2015 Twitter, Inc.
@@ -74,6 +76,7 @@ code {
 
 body {
     background-color: #eee;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .form-signin {
@@ -119,4 +122,64 @@ body {
 
 .form-delete {
     display: inline;
+}
+
+.startpage {
+    border-bottom: 1px dashed #fff;
+    margin-bottom: 30px;
+}
+
+.result-row {
+    background-color: #FFF;
+    margin: 0 0 20px;
+    border-radius: 8px;
+    position: relative;
+    padding: 0 15px;
+}
+
+.result-row hr {
+    margin: 10px 0;
+    border-style: dashed none none;
+}
+
+.result-row .col1 {
+    float: left;
+    padding-right: 15px;
+}
+
+.result-row .col2 {
+    padding-top: 10px;
+}
+
+.result-row .time {
+    float: right;
+    color: #999;
+    font-size: 12px;
+}
+
+.result-row .res {
+    padding-top: 7px;
+}
+
+.result-row .lang {
+    position: absolute;
+    bottom: 9px;
+    right: 13px;
+}
+
+.avatar {
+    margin-left: -15px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+@media (max-width: 420px) {
+    .result-row .time {
+        float: none;
+    }
+
+    .result-row .lang {
+        position: relative;
+        padding: 15px 0 0 15px;
+    }
 }

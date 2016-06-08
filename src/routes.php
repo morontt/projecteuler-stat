@@ -14,7 +14,9 @@ $app['converter.lang'] = function ($app) {
     return new LangConverter($app['pe_database.repository']);
 };
 
-$app->get('/', 'MttProjecteuler\\Controller\\WebController::index')
+$app->get('/{page}', 'MttProjecteuler\\Controller\\WebController::index')
+    ->assert('page', '\d+')
+    ->value('page', 1)
     ->bind('homepage');
 
 $app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
