@@ -32,4 +32,4 @@ test:
   pre:
     - chmod -R 777 var/cache
   override:
-    - bin/behat
+    - bin/behat -f progress -o std -f junit -o $CIRCLE_TEST_REPORTS/behat
