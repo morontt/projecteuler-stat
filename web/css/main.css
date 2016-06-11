@@ -124,9 +124,9 @@ body {
     display: inline;
 }
 
-.startpage {
-    border-bottom: 1px dashed #fff;
-    margin-bottom: 30px;
+.results-row {
+    border-top: 1px dashed #fff;
+    padding-top: 30px;
 }
 
 .result-row {
@@ -171,6 +171,11 @@ body {
     margin-left: -15px;
     border-radius: 8px;
     display: inline-block;
+}
+
+.pager-nav {
+    border-top: 1px dashed #fff;
+    margin-top: 10px;
 }
 
 @media (max-width: 420px) {

@@ -9,9 +9,8 @@
 namespace MttProjecteuler\Controller;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
 
-class AdminController
+class AdminController extends BaseController
 {
     /**
      * @param Application $app

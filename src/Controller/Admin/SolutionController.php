@@ -9,11 +9,12 @@
 namespace MttProjecteuler\Controller\Admin;
 
 use Carbon\Carbon;
+use MttProjecteuler\Controller\BaseController;
 use MttProjecteuler\Model\Solution;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class SolutionController
+class SolutionController extends BaseController
 {
     /**
      * @param Application $app

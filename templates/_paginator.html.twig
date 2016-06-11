@@ -1,0 +1,29 @@
+{% if paginationMeta.last > 1 %}
+<div class="pager-nav">
+    <ul class="pagination pagination-sm pull-right">
+        {% if paginationMeta.previous %}
+            <li class="prev">
+                <a href="{{ paginationMeta.url_generator|call(paginationMeta.current - 1) }}">&larr;</a>
+            </li>
+        {% else %}
+            <li class="prev disabled"><span>&larr;</span></li>
+        {% endif %}
+
+        {% for i in 1..paginationMeta.last %}
+            {% if paginationMeta.current == i %}
+                <li class="active"><span>{{ i }}</span></li>
+            {% else %}
+                <li><a href="{{ paginationMeta.url_generator|call(i) }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if paginationMeta.next %}
+            <li class="next">
+                <a href="{{ paginationMeta.url_generator|call(paginationMeta.current + 1) }}">&rarr;</a>
+            </li>
+        {% else %}
+            <li class="prev disabled"><span>&rarr;</span></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

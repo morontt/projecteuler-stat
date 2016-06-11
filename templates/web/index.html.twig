@@ -6,12 +6,14 @@
     <div class="page-header">
         <h1>Статистика по решениям задач</h1>
     </div>
-    <div class="startpage">
-        <p class="lead">Результаты решений задач с <a href="https://projecteuler.net/">Project Euler</a>,
-            прокрученные на <strong>Raspberry Pi 2</strong>.
-        </p>
-    </div>
-    <div class="row">
+    {% if page == 1 %}
+        <div>
+            <p class="lead">Результаты решений задач с <a href="https://projecteuler.net/">Project Euler</a>,
+                прокрученные на <strong>Raspberry Pi 2</strong>.
+            </p>
+        </div>
+    {% endif %}
+    <div class="row results-row">
         <div class="col-md-6">
             {% for result in results %}
                 {% if loop.index is odd %}
@@ -27,4 +29,5 @@
             {% endfor %}
         </div>
     </div>
+    {{ include('_paginator.html.twig') }}
 {% endblock %}

@@ -9,8 +9,10 @@
 namespace MttProjecteuler\Controller;
 
 use Silex\Application;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class WebController
+class WebController extends BaseController
 {
     /**
      * @param Application $app
@@ -19,9 +21,21 @@ class WebController
      */
     public function index(Application $app, $page)
     {
-        $results = $app['pe_database.repository']->getResultsForStartpage((int)$page);
+        $page = (int)$page;
+        $countPages = $app['pe_database.repository']->getCountResultsForStartpage();
 
-        return $app['twig']->render('web/index.html.twig', compact('results'));
+        if ($page > $countPages) {
+            throw new NotFoundHttpException(sprintf('WebController:index, page %d not found', $page));
+        }
+
+        $urlRenerator = $app['url_generator'];
+        $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator) {
+            return $urlRenerator->generate('homepage', ['page' => $p], UrlGeneratorInterface::ABSOLUTE_PATH);
+        });
+
+        $results = $app['pe_database.repository']->getResultsForStartpage($page);
+
+        return $app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta'));
     }
 
     /**

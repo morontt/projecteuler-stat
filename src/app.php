@@ -22,6 +22,17 @@ $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
+    $twig->addFilter('lambda_filter', new \Twig_SimpleFilter('call', function () {
+        $arguments = func_get_args();
+        $callable = array_shift($arguments);
+
+        if (!is_callable($callable)) {
+            throw new InvalidArgumentException();
+        }
+
+        return call_user_func_array($callable, $arguments);
+    }));
+
     return $twig;
 });
 

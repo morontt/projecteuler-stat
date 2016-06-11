@@ -135,6 +135,19 @@ SQL;
     }
 
     /**
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getCountResultsForStartpage()
+    {
+        $stmt = $this->db->prepare('SELECT COUNT(`id`) AS `cnt` FROM `solutions`');
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        return (int)ceil((int)$result['cnt'] / self::LIMIT);
+    }
+
+    /**
      * @param int $id
      * @return Lang|null
      */
