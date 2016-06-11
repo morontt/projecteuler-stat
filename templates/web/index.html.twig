@@ -1,6 +1,7 @@
 {% extends "layout.html.twig" %}
 
-{% block description %}Статистика по решениям задач с projecteuler.net{% endblock %}
+{% block title %}{{ parent() }}{% if page > 1 %} - страница {{ page }}{% endif %}{% endblock %}
+{% block description %}Статистика по решениям задач с projecteuler.net{% if page > 1 %} (страница {{ page }}){% endif %}{% endblock %}
 
 {% block content %}
     <div class="page-header">

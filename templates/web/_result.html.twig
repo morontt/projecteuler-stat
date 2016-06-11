@@ -12,7 +12,14 @@
         <span class="time">{{ result.created|date('d.m.Y H:i') }}</span>
         <hr/>
         <a href="#">Проблема №{{ result.problem_number }}</a>
-        <div class="res">Время: {{ result.execution_time }} &plusmn; {{ result.deviation_time }} сек.</div>
+        <div class="res">Время:
+            {% if result.execution_time > 60 %}
+                <span class="bad">{{ result.execution_time }} &plusmn; {{ result.deviation_time }}</span>
+            {% else %}
+                {{ result.execution_time }} &plusmn; {{ result.deviation_time }}
+            {% endif %}
+            сек.
+        </div>
     </div>
     {% if result.lang_name %}
         <div class="lang">{{ result.lang_name }} ({{ result.lang_comment }})</div>
