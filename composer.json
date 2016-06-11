@@ -31,6 +31,7 @@
         "symfony/doctrine-bridge": "~2.8|3.0.*",
         "symfony/monolog-bridge": "~2.8|3.0.*",
         "symfony/debug": "~2.8|3.0.*",
+        "fzaninotto/faker": "~1.5",
         "sorien/silex-pimple-dumper": "~2.0"
     },
     "autoload": {
