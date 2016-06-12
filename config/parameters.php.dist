@@ -5,4 +5,5 @@ return [
     'db_name' => 'projecteuler',
     'db_user' => 'user',
     'db_password' => 'password',
+    'disqus_shortname' => 'example',
 ];

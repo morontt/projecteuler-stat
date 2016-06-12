@@ -5,4 +5,5 @@ return [
     'db_name' => 'circle_test',
     'db_user' => 'ubuntu',
     'db_password' => null,
+    'disqus_shortname' => 'pestat-loc',
 ];

@@ -38,6 +38,8 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
 
 $parameters = require_once __DIR__ . '/../config/parameters.php';
 
+$app['disqus_shortname'] = $parameters['disqus_shortname'];
+
 $app->register(new DoctrineServiceProvider(), [
     'db.options' => [
         'driver' => 'pdo_mysql',

@@ -20,4 +20,24 @@
             {%- endfor -%}
         </div>
     </div>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_shortname = '{{ app.disqus_shortname }}';
+        var disqus_identifier = '{{ path('problem', {'number': number}) }}';
+        var disqus_url = '{{ url('problem', {'number': number}) }}';
+        var disqus_title = {{ ('Задача №' ~ number)|json_encode|raw }};
+        var disqus_config = function () {
+            this.language = 'ru';
+        };
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the
+        <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </noscript>
 {% endblock %}
