@@ -1,19 +1,12 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}{{ parent() }}{% if page > 1 %} - страница {{ page }}{% endif %}{% endblock %}
-{% block description %}Статистика по решениям задач с projecteuler.net{% if page > 1 %} (страница {{ page }}){% endif %}{% endblock %}
+{% block title %}{{ parent() }} - {{ user.username }}{% if page > 1 %} - страница {{ page }}{% endif %}{% endblock %}
+{% block description %}Решения пользователя {{ user.username }}{% if page > 1 %} (страница {{ page }}){% endif %}{% endblock %}
 
 {% block content %}
     <div class="page-header">
-        <h1>Статистика по решениям задач</h1>
+        <h1>Результаты пользователя {{ user.username }}</h1>
     </div>
-    {% if page == 1 %}
-        <div>
-            <p class="lead">Результаты решений задач с <a href="https://projecteuler.net/">Project Euler</a>,
-                прокрученные на <strong>Raspberry Pi 2</strong>.
-            </p>
-        </div>
-    {% endif %}
     <div class="row results-row">
         <div class="col-md-6">
             {%- for result in results -%}

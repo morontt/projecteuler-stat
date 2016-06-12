@@ -9,9 +9,10 @@
 namespace MttProjecteuler\Model;
 
 use Carbon\Carbon;
+use MttProjecteuler\Utils\Slug;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User extends AbstractModel implements UserInterface
+class User extends AbstractModel implements UserInterface, \Serializable
 {
     /**
      * @var array
@@ -21,6 +22,7 @@ class User extends AbstractModel implements UserInterface
         'username',
         'email',
         'email_hash',
+        'slug',
         'salt',
         'password_hash',
         'created_at',
@@ -40,6 +42,11 @@ class User extends AbstractModel implements UserInterface
      * @var string
      */
     protected $email;
+
+    /**
+     * @var string
+     */
+    protected $slug;
 
     /**
      * @var string
@@ -69,6 +76,32 @@ class User extends AbstractModel implements UserInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+            ) = unserialize($serialized);
+    }
+
+    /**
      * @param array $data
      */
     public function populate(array $data)
@@ -82,6 +115,7 @@ class User extends AbstractModel implements UserInterface
             ->setEmail($data['email'])
             ->setEmailHash($data['email_hash'])
             ->setSalt($data['salt'])
+            ->setSlug($data['slug'])
             ->setPassword($data['password_hash'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
         ;
@@ -97,6 +131,7 @@ class User extends AbstractModel implements UserInterface
             'email' => $this->getEmail(),
             'email_hash' => $this->getEmailHash(),
             'salt' => $this->getSalt(),
+            'slug' => $this->getSlug() ?: Slug::slugify($this->getUsername()),
             'password_hash' => $this->getPassword(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
         ];
@@ -155,6 +190,25 @@ class User extends AbstractModel implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -57,6 +57,30 @@ class Repository
     }
 
     /**
+     * @param string $slug
+     * @return User|null
+     */
+    public function findUserBySlug($slug)
+    {
+        $fields = User::getFieldsQueryString();
+
+        $sql = "SELECT {$fields} FROM `users` WHERE `slug` = :slug";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('slug', $slug, \PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if ($result) {
+            $entity = new User();
+            $entity->populate($result);
+        } else {
+            $entity = null;
+        }
+
+        return $entity;
+    }
+
+    /**
      * @param int $id
      * @return Solution|null
      */
@@ -109,14 +133,8 @@ class Repository
      */
     public function getResultsForStartpage($page)
     {
-        $sql = <<<SQL
-SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
-  `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`
-FROM `solutions` AS `s`
-INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
-LEFT JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
-ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset
-SQL;
+        $sql = $this->getCommonResultsQuery();
+        $sql .= ' ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset';
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('limit', self::LIMIT, \PDO::PARAM_INT);
@@ -135,12 +153,58 @@ SQL;
     }
 
     /**
-     * @return mixed
-     * @throws \Doctrine\DBAL\DBALException
+     * @param User $user
+     * @param int $page
+     * @return array
+     */
+    public function getResultsForUser(User $user, $page)
+    {
+        $sql = $this->getCommonResultsQuery();
+        $sql .= ' WHERE `u`.`id` = :userid ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('userid', $user->getId(), \PDO::PARAM_INT);
+        $stmt->bindValue('limit', self::LIMIT, \PDO::PARAM_INT);
+        $stmt->bindValue('offset', ($page - 1) * self::LIMIT, \PDO::PARAM_INT);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return array_map(
+            function (array $data) {
+                $data['created'] = Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']);
+
+                return $data;
+            },
+            $results
+        );
+    }
+
+    /**
+     * @return int
      */
     public function getCountResultsForStartpage()
     {
         $stmt = $this->db->prepare('SELECT COUNT(`id`) AS `cnt` FROM `solutions`');
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        return (int)ceil((int)$result['cnt'] / self::LIMIT);
+    }
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function getCountResultsForUser(User $user)
+    {
+        $sql = <<<SQL
+SELECT COUNT(`s`.`id`) AS `cnt` FROM `solutions` AS `s`
+INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
+WHERE `u`.`id` = :userid
+SQL;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('userid', $user->getId(), \PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -212,5 +276,19 @@ SQL;
         }
 
         return $choices;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCommonResultsQuery()
+    {
+        return <<<SQL
+SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
+  `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`, `u`.`slug` AS `user_slug`
+FROM `solutions` AS `s`
+INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
+LEFT JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
+SQL;
     }
 }

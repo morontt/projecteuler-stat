@@ -2,6 +2,7 @@
 
 use MttProjecteuler\Route\LangConverter;
 use MttProjecteuler\Route\SolutionConverter;
+use MttProjecteuler\Route\UserConverter;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,20 @@ $app['converter.lang'] = function ($app) {
     return new LangConverter($app['pe_database.repository']);
 };
 
+$app['converter.user'] = function ($app) {
+    return new UserConverter($app['pe_database.repository']);
+};
+
 $app->get('/{page}', 'MttProjecteuler\\Controller\\WebController::index')
     ->assert('page', '\d+')
     ->value('page', 1)
     ->bind('homepage');
+
+$app->get('/user/{user}/{page}', 'MttProjecteuler\\Controller\\WebController::user')
+    ->assert('page', '\d+')
+    ->value('page', 1)
+    ->convert('user', 'converter.user:convert')
+    ->bind('userpage');
 
 $app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
     ->bind('about');

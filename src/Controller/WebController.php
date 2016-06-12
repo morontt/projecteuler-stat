@@ -8,7 +8,9 @@
 
 namespace MttProjecteuler\Controller;
 
+use MttProjecteuler\Model\User;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -35,7 +37,38 @@ class WebController extends BaseController
 
         $results = $app['pe_database.repository']->getResultsForStartpage($page);
 
-        return $app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta'));
+        return new Response($app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta')));
+    }
+
+    /**
+     * @param Application $app
+     * @param User $user
+     * @param string $page
+     * @return string
+     */
+    public function user(Application $app, User $user, $page)
+    {
+        $page = (int)$page;
+        $countPages = $app['pe_database.repository']->getCountResultsForUser($user);
+
+        if ($page > $countPages) {
+            throw new NotFoundHttpException(sprintf('WebController:user, page %d not found', $page));
+        }
+
+        $urlRenerator = $app['url_generator'];
+        $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator, $user) {
+            return $urlRenerator->generate(
+                'userpage', ['page' => $p, 'user' => $user->getSlug()],
+                UrlGeneratorInterface::ABSOLUTE_PATH
+            );
+        });
+
+        $results = $app['pe_database.repository']->getResultsForUser($user, $page);
+
+        return new Response($app['twig']->render(
+            'web/user.html.twig',
+            compact('results', 'page', 'paginationMeta', 'user')
+        ));
     }
 
     /**
@@ -44,6 +77,6 @@ class WebController extends BaseController
      */
     public function about(Application $app)
     {
-        return $app['twig']->render('web/about.html.twig', []);
+        return new Response($app['twig']->render('web/about.html.twig', []));
     }
 }

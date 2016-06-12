@@ -199,7 +199,7 @@ class Solution extends AbstractModel
      */
     public function setDeviationTime($deviationTime)
     {
-        $this->deviationTime = (double)$deviationTime;
+        $this->deviationTime = $deviationTime === null ? null : (double)$deviationTime;
 
         return $this;
     }
