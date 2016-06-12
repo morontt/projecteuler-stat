@@ -94,6 +94,13 @@ class Migrator
         $solutionsTable->addForeignKeyConstraint($languagesTable, ['lang_id'], ['id'], ['onDelete' => 'SET NULL']);
         $solutionsTable->addForeignKeyConstraint($userTable, ['created_by'], ['id'], ['onDelete' => 'CASCADE']);
 
+        $problemTable = $schema->createTable('problems');
+        $problemTable->addColumn('id', 'integer', ['autoincrement' => true, 'unsigned' => true,]);
+        $problemTable->addColumn('problem_number', 'integer');
+        $problemTable->addColumn('title', 'string', ['length' => 255]);
+        $problemTable->addUniqueIndex(['problem_number']);
+        $problemTable->setPrimaryKey(['id']);
+
         return $schema;
     }
 }

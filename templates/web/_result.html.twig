@@ -11,7 +11,7 @@
         <strong>#{{ result.id }}</strong>
         <span class="time">{{ result.created|date('d.m.Y H:i') }}</span>
         <hr/>
-        <a href="#">Проблема №{{ result.problem_number }}</a>
+        <a href="{{ path('problem', {'number': result.problem_number}) }}">Проблема №{{ result.problem_number }}</a>
         <div class="res">Время:
             {% if result.execution_time > 60 -%}
                 <span class="bad">

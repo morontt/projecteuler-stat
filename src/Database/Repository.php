@@ -180,6 +180,30 @@ class Repository
     }
 
     /**
+     * @param int $number
+     * @return array
+     */
+    public function getResultsByProblem($number)
+    {
+        $sql = $this->getCommonResultsQuery();
+        $sql .= ' WHERE `s`.`problem_number` = :number ORDER BY `s`.`execution_time`';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('number', $number, \PDO::PARAM_INT);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return array_map(
+            function (array $data) {
+                $data['created'] = Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']);
+
+                return $data;
+            },
+            $results
+        );
+    }
+
+    /**
      * @return int
      */
     public function getCountResultsForStartpage()
@@ -276,6 +300,16 @@ SQL;
         }
 
         return $choices;
+    }
+
+    public function findProblem($number)
+    {
+        $sql = "SELECT `id`, `problem_number`, `title` FROM `problems` WHERE `problem_number` = :number";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('number', $number, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 
     /**

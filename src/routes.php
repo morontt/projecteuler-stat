@@ -30,6 +30,10 @@ $app->get('/user/{user}/{page}', 'MttProjecteuler\\Controller\\WebController::us
     ->convert('user', 'converter.user:convert')
     ->bind('userpage');
 
+$app->get('/problem/{number}', 'MttProjecteuler\\Controller\\WebController::problem')
+    ->assert('number', '\d+')
+    ->bind('problem');
+
 $app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
     ->bind('about');
 
