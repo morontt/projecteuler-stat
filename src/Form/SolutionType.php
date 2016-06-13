@@ -9,6 +9,7 @@
 namespace MttProjecteuler\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,6 +33,8 @@ class SolutionType extends AbstractType
         $builder
             ->add('problemNumber')
             ->add('langId', ChoiceType::class, ['choices' => $choices, 'required' => false,])
+            ->add('sourceLink')
+            ->add('generate', CheckboxType::class, ['mapped' => false, 'required' => false,])
             ->add('executionTime')
             ->add('deviationTime')
             ->add('submit', SubmitType::class)

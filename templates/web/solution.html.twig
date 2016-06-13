@@ -1,0 +1,44 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ parent() }} - решение №{{ id }}{% endblock %}
+{% block description %}Решение задачи №{{ result.problem_number }} из projecteuler.net{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Решение #{{ id }} задачи №{{ result.problem_number }}</h1>
+    </div>
+    <div class="row results-row">
+        <div class="col-md-6">
+            <div class="desc">
+                <h2>{{ problem.title }}</h2>
+                <a href="https://projecteuler.net/problem={{ result.problem_number }}">
+                    <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Условие
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            {{ include('web/_result.html.twig') }}
+        </div>
+    </div>
+    {{ result.source_html|raw }}
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_shortname = '{{ app.disqus_shortname }}';
+        var disqus_identifier = '{{ path('solution', {'id': id}) }}';
+        var disqus_url = '{{ url('solution', {'id': id}) }}';
+        var disqus_title = {{ ('Решение #' ~ id ~ ' задачи №' ~ result.problem_number)|json_encode|raw }};
+        var disqus_config = function () {
+            this.language = 'ru';
+        };
+
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the
+        <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </noscript>
+{% endblock %}

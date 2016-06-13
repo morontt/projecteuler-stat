@@ -8,7 +8,7 @@
         </a>
     </div>
     <div class="col2">
-        <strong>#{{ result.id }}</strong>
+        <strong><a href="{{ path('solution', {'id': result.id}) }}">#{{ result.id }}</a></strong>
         <span class="time">{{ result.created|date('d.m.Y H:i') }}</span>
         <hr/>
         <a href="{{ path('problem', {'number': result.problem_number}) }}">Проблема №{{ result.problem_number }}</a>

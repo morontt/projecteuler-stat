@@ -19,6 +19,7 @@ class Lang extends AbstractModel
         'id',
         'name',
         'comment',
+        'lexer',
         'created_by',
         'created_at',
         'updated_at',
@@ -38,6 +39,11 @@ class Lang extends AbstractModel
      * @var string
      */
     protected $comment;
+
+    /**
+     * @var string|null
+     */
+    protected $lexer;
 
     /**
      * @var int
@@ -73,6 +79,7 @@ class Lang extends AbstractModel
         $this
             ->setName($data['name'])
             ->setComment($data['comment'])
+            ->setLexer($data['lexer'])
             ->setCreatedBy($data['created_by'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
             ->setUpdatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['updated_at']))
@@ -87,6 +94,7 @@ class Lang extends AbstractModel
         return [
             'name' => $this->getName(),
             'comment' => $this->getComment(),
+            'lexer' => $this->getLexer(),
             'created_by' => $this->getCreatedBy(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
@@ -154,6 +162,25 @@ class Lang extends AbstractModel
     public function setComment($comment)
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLexer()
+    {
+        return $this->lexer;
+    }
+
+    /**
+     * @param null|string $lexer
+     * @return $this
+     */
+    public function setLexer($lexer)
+    {
+        $this->lexer = $lexer;
 
         return $this;
     }

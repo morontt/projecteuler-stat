@@ -19,6 +19,8 @@ class Solution extends AbstractModel
         'id',
         'problem_number',
         'lang_id',
+        'source_link',
+        'source_html',
         'execution_time',
         'deviation_time',
         'created_by',
@@ -40,6 +42,16 @@ class Solution extends AbstractModel
      * @var int
      */
     protected $langId;
+
+    /**
+     * @var string|null
+     */
+    protected $sourceLink;
+
+    /**
+     * @var string|null
+     */
+    protected $sourceHtml;
 
     /**
      * @var double
@@ -85,6 +97,8 @@ class Solution extends AbstractModel
         $this
             ->setProblemNumber($data['problem_number'])
             ->setLangId($data['lang_id'])
+            ->setSourceLink($data['source_link'])
+            ->setSourceHtml($data['source_html'])
             ->setExecutionTime($data['execution_time'])
             ->setDeviationTime($data['deviation_time'])
             ->setCreatedBy($data['created_by'])
@@ -101,6 +115,8 @@ class Solution extends AbstractModel
         return [
             'problem_number' => $this->getProblemNumber(),
             'lang_id' => $this->getLangId(),
+            'source_html' => $this->getSourceHtml(),
+            'source_link' => $this->getSourceLink(),
             'execution_time' => $this->getExecutionTime(),
             'deviation_time' => $this->getDeviationTime(),
             'created_by' => $this->getCreatedBy(),
@@ -162,6 +178,44 @@ class Solution extends AbstractModel
     public function setLangId($langId)
     {
         $this->langId = $langId ? (int)$langId : null;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSourceLink()
+    {
+        return $this->sourceLink;
+    }
+
+    /**
+     * @param null|string $sourceLink
+     * @return $this
+     */
+    public function setSourceLink($sourceLink)
+    {
+        $this->sourceLink = $sourceLink;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSourceHtml()
+    {
+        return $this->sourceHtml;
+    }
+
+    /**
+     * @param null|string $sourceHtml
+     * @return $this
+     */
+    public function setSourceHtml($sourceHtml)
+    {
+        $this->sourceHtml = $sourceHtml;
 
         return $this;
     }

@@ -105,16 +105,16 @@ class FixturesLoad extends BaseCommand
     protected function createLanguages()
     {
         $languages = [
-            ['C', 'gcc 4.8.2'],
-            ['Java', '1.8.0_91'],
-            ['ECMAScript', 'Node.js 4.4.3'],
-            ['PHP', '5.5.9'],
-            ['Clojure', '1.8.0'],
-            ['Go', '1.6.0'],
-            ['Python', '2.7.6'],
-            ['COBOL', '9.1.1'],
-            ['Lua', '5.2'],
-            ['Ruby', '2.3.1'],
+            ['C', 'gcc 4.8.2', 'c'],
+            ['Java', '1.8.0_91', 'java'],
+            ['ECMAScript', 'Node.js 4.4.3', 'js'],
+            ['PHP', '5.5.9', 'php'],
+            ['Clojure', '1.8.0', 'clojure'],
+            ['Go', '1.6.0', 'go'],
+            ['Python', '2.7.6', 'python'],
+            ['COBOL', '9.1.1', 'cobol'],
+            ['Lua', '5.2', 'lua'],
+            ['Ruby', '2.3.1', 'rb'],
         ];
 
         foreach ($languages as $lang) {
@@ -122,6 +122,7 @@ class FixturesLoad extends BaseCommand
             $entity
                 ->setName($lang[0])
                 ->setComment($lang[1])
+                ->setLexer($lang[2])
                 ->setCreatedBy((int)$this->userIds[$this->faker->numberBetween(0, count($this->userIds) - 1)])
             ;
             $this->db->insert('languages', $entity->toArray());

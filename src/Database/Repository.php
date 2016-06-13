@@ -204,6 +204,34 @@ class Repository
     }
 
     /**
+     * @param int $id
+     * @return array
+     */
+    public function getSingleResult($id)
+    {
+        $sql = <<<SQL
+SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
+  `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`, `u`.`slug` AS `user_slug`,
+  `s`.`source_html`
+FROM `solutions` AS `s`
+INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
+LEFT JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
+WHERE `s`.`id` = :id
+SQL;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if (is_array($result)) {
+            $result['created'] = Carbon::createFromFormat('Y-m-d H:i:s', $result['created_at']);
+        }
+
+        return $result;
+    }
+
+    /**
      * @return int
      */
     public function getCountResultsForStartpage()
@@ -302,6 +330,10 @@ SQL;
         return $choices;
     }
 
+    /**
+     * @param int $number
+     * @return array
+     */
     public function findProblem($number)
     {
         $sql = "SELECT `id`, `problem_number`, `title` FROM `problems` WHERE `problem_number` = :number";
@@ -309,7 +341,36 @@ SQL;
         $stmt->bindValue('number', $number, \PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetch();
+        $problem = $stmt->fetch();
+
+        if (!$problem) {
+            $curl = curl_init('https://projecteuler.net/problem=' . $number);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0');
+            curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $data = curl_exec($curl);
+
+            if (curl_errno($curl)) {
+                $problem = ['title' => 'undefined'];
+            } else {
+                curl_close($curl);
+
+                $matches = [];
+                if (preg_match('/<h2>([^<]+)<\/h2>/', $data, $matches)) {
+                    $problem = [
+                        'title' => $matches[1],
+                        'problem_number' => $number,
+                        'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    ];
+                    $this->db->insert('problems', $problem);
+                } else {
+                    $problem = ['title' => 'undefined'];
+                }
+            }
+        }
+
+        return $problem;
     }
 
     /**

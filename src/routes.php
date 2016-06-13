@@ -34,6 +34,10 @@ $app->get('/problem/{number}', 'MttProjecteuler\\Controller\\WebController::prob
     ->assert('number', '\d+')
     ->bind('problem');
 
+$app->get('/solution/{id}', 'MttProjecteuler\\Controller\\WebController::solution')
+    ->assert('id', '\d+')
+    ->bind('solution');
+
 $app->get('/about', 'MttProjecteuler\\Controller\\WebController::about')
     ->bind('about');
 

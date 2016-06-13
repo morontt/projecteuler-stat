@@ -11,6 +11,7 @@ namespace MttProjecteuler\Controller\Admin;
 use Carbon\Carbon;
 use MttProjecteuler\Controller\BaseController;
 use MttProjecteuler\Model\Solution;
+use MttProjecteuler\Utils\Pygment;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -82,6 +83,14 @@ class SolutionController extends BaseController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $entity->setUpdatedAt(new Carbon());
+
+            if ($form->get('generate')->getData() && $entity->getSourceLink()) {
+                $lang = $app['pe_database.repository']->findLang((int)$entity->getLangId());
+                if ($lang && $lang->getLexer()) {
+                    $entity->setSourceHtml(Pygment::highlight($entity->getSourceLink(), $lang->getLexer()));
+                }
+            }
+
             $app['db']->update('solutions', $entity->toArray(), ['id' => $entity->getId()]);
             $app['session']->getFlashBag()->add('success', sprintf('Решение ID: %s отредактировано', $entity->getId()));
 

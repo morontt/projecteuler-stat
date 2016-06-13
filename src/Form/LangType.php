@@ -24,6 +24,7 @@ class LangType extends AbstractType
         $builder
             ->add('name')
             ->add('comment')
+            ->add('lexer')
             ->add('submit', SubmitType::class)
         ;
     }

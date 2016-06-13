@@ -83,33 +83,26 @@ class WebController extends BaseController
         $results = $app['pe_database.repository']->getResultsByProblem($number);
         $problem = $app['pe_database.repository']->findProblem($number);
 
-        if (!$problem) {
-            $curl = curl_init('https://projecteuler.net/problem=' . $number);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0');
-            curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        return new Response($app['twig']->render('web/problem.html.twig', compact('results', 'number', 'problem')));
+    }
 
-            $data = curl_exec($curl);
+    /**
+     * @param Application $app
+     * @param string $id
+     * @return Response
+     */
+    public function solution(Application $app, $id)
+    {
+        $id = (int)$id;
+        $result = $app['pe_database.repository']->getSingleResult($id);
 
-            if (curl_errno($curl)) {
-                $problem = ['title' => 'undefined'];
-            } else {
-                curl_close($curl);
-
-                $matches = [];
-                if (preg_match('/<h2>([^<]+)<\/h2>/', $data, $matches)) {
-                    $problem = [
-                        'title' => $matches[1],
-                        'problem_number' => $number,
-                    ];
-                    $app['db']->insert('problems', $problem);
-                } else {
-                    $problem = ['title' => 'undefined'];
-                }
-            }
+        if ($result === false) {
+            throw new NotFoundHttpException(sprintf('WebController:solution, solution %d not found', $id));
         }
 
-        return new Response($app['twig']->render('web/problem.html.twig', compact('results', 'number', 'problem')));
+        $problem = $app['pe_database.repository']->findProblem($result['problem_number']);
+
+        return new Response($app['twig']->render('web/solution.html.twig', compact('result', 'id', 'problem')));
     }
 
     /**
