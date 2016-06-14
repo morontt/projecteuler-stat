@@ -201,6 +201,10 @@ body {
     padding: 0 15px;
 }
 
+.result-row strong a {
+    color: #333;
+}
+
 .result-row hr {
     margin: 7px 0;
     border-style: dashed none none;
