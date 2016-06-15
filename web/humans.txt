@@ -1,0 +1,12 @@
+/* TEAM */
+	Developer: Alexander Harchenko
+	Contact: morontt [at] gmail [dot] com
+	Twitter: @morontt
+	From: Kharkov, Ukraine
+
+/* SITE */
+	Create: 2016/06/14
+	Language: Russian
+	IDE: PhpStorm
+	Server: NGINX + Apache2
+	Powered by: Silex
