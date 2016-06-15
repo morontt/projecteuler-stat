@@ -134,7 +134,7 @@ class Repository
     public function getResultsForStartpage($page)
     {
         $sql = $this->getCommonResultsQuery();
-        $sql .= ' ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset';
+        $sql .= ' WHERE `public` = 1 ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset';
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('limit', self::LIMIT, \PDO::PARAM_INT);
@@ -160,7 +160,7 @@ class Repository
     public function getResultsForUser(User $user, $page)
     {
         $sql = $this->getCommonResultsQuery();
-        $sql .= ' WHERE `u`.`id` = :userid ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset';
+        $sql .= ' WHERE `public` = 1 AND `u`.`id` = :userid ORDER BY `s`.`id` DESC LIMIT :limit OFFSET :offset';
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('userid', $user->getId(), \PDO::PARAM_INT);
@@ -186,7 +186,7 @@ class Repository
     public function getResultsByProblem($number)
     {
         $sql = $this->getCommonResultsQuery();
-        $sql .= ' WHERE `s`.`problem_number` = :number ORDER BY `s`.`execution_time`';
+        $sql .= ' WHERE `public` = 1 AND `s`.`problem_number` = :number ORDER BY `s`.`execution_time`';
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('number', $number, \PDO::PARAM_INT);
@@ -216,7 +216,7 @@ SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time
 FROM `solutions` AS `s`
 INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
 LEFT JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
-WHERE `s`.`id` = :id
+WHERE `s`.`id` = :id AND `public` = 1
 SQL;
 
         $stmt = $this->db->prepare($sql);
@@ -236,7 +236,7 @@ SQL;
      */
     public function getCountResultsForStartpage()
     {
-        $stmt = $this->db->prepare('SELECT COUNT(`id`) AS `cnt` FROM `solutions`');
+        $stmt = $this->db->prepare('SELECT COUNT(`id`) AS `cnt` FROM `solutions` WHERE `public` = 1');
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -252,7 +252,7 @@ SQL;
         $sql = <<<SQL
 SELECT COUNT(`s`.`id`) AS `cnt` FROM `solutions` AS `s`
 INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
-WHERE `u`.`id` = :userid
+WHERE `u`.`id` = :userid AND `public` = 1
 SQL;
 
         $stmt = $this->db->prepare($sql);

@@ -23,6 +23,7 @@ class Solution extends AbstractModel
         'source_html',
         'execution_time',
         'deviation_time',
+        'public',
         'created_by',
         'created_at',
         'updated_at',
@@ -64,6 +65,11 @@ class Solution extends AbstractModel
     protected $deviationTime;
 
     /**
+     * @var bool
+     */
+    protected $public = false;
+
+    /**
      * @var int
      */
     protected $createdBy;
@@ -101,6 +107,7 @@ class Solution extends AbstractModel
             ->setSourceHtml($data['source_html'])
             ->setExecutionTime($data['execution_time'])
             ->setDeviationTime($data['deviation_time'])
+            ->setPublic((int)$data['public'] == 1)
             ->setCreatedBy($data['created_by'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
             ->setUpdatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['updated_at']))
@@ -119,6 +126,7 @@ class Solution extends AbstractModel
             'source_link' => $this->getSourceLink(),
             'execution_time' => $this->getExecutionTime(),
             'deviation_time' => $this->getDeviationTime(),
+            'public' => $this->isPublic() ? 1 : 0,
             'created_by' => $this->getCreatedBy(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
@@ -254,6 +262,26 @@ class Solution extends AbstractModel
     public function setDeviationTime($deviationTime)
     {
         $this->deviationTime = $deviationTime === null ? null : (double)$deviationTime;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * @param $public
+     *
+     * @return $this
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
 
         return $this;
     }

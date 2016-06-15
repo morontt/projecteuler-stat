@@ -37,6 +37,7 @@ class SolutionType extends AbstractType
             ->add('generate', CheckboxType::class, ['mapped' => false, 'required' => false,])
             ->add('executionTime')
             ->add('deviationTime')
+            ->add('public', CheckboxType::class, ['required' => false,])
             ->add('submit', SubmitType::class)
         ;
     }

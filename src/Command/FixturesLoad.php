@@ -142,6 +142,7 @@ class FixturesLoad extends BaseCommand
                 ->setLangId((int)$this->langIds[$this->faker->numberBetween(0, count($this->langIds) - 1)])
                 ->setExecutionTime($this->faker->numberBetween(1000, 80000) * 0.001)
                 ->setDeviationTime($this->faker->numberBetween(100, 8000) * 0.001)
+                ->setPublic(true)
             ;
             $this->db->insert('solutions', $entity->toArray());
         }

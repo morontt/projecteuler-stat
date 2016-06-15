@@ -89,6 +89,7 @@ class Migrator
         $solutionsTable->addColumn('source_html', 'text', ['notnull' => false, 'length' => 100000]);
         $solutionsTable->addColumn('execution_time', 'float');
         $solutionsTable->addColumn('deviation_time', 'float', ['notnull' => false,]);
+        $solutionsTable->addColumn('public', 'smallint');
         $solutionsTable->addColumn('created_by', 'integer', ['unsigned' => true,]);
         $solutionsTable->addColumn('created_at', 'datetime');
         $solutionsTable->addColumn('updated_at', 'datetime');
