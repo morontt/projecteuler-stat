@@ -2,6 +2,6 @@
 
 composer install --no-dev --optimize-autoloader
 
-./console db:schema
+./console db:schema -e prod
 
 rm -Rf var/cache/twig/*
