@@ -212,7 +212,7 @@ class Repository
         $sql = <<<SQL
 SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
   `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`, `u`.`slug` AS `user_slug`,
-  `s`.`source_html`
+  `s`.`source_html`, `s`.`updated_at`
 FROM `solutions` AS `s`
 INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
 LEFT JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
@@ -226,6 +226,7 @@ SQL;
 
         if (is_array($result)) {
             $result['created'] = Carbon::createFromFormat('Y-m-d H:i:s', $result['created_at']);
+            $result['updated'] = Carbon::createFromFormat('Y-m-d H:i:s', $result['updated_at']);
         }
 
         return $result;
@@ -371,6 +372,66 @@ SQL;
         }
 
         return $problem;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function lastModifiedStartpage()
+    {
+        $stmt = $this->db->prepare(
+            "SELECT `updated_at` FROM `solutions` WHERE `public` = 1 ORDER BY `updated_at` DESC LIMIT 1"
+        );
+        $stmt->execute();
+
+        $col = $stmt->fetch(\PDO::FETCH_COLUMN);
+        if ($col) {
+            $col = '2016-06-16 22:45:45';
+        }
+
+        return Carbon::createFromFormat('Y-m-d H:i:s', $col);
+    }
+
+    /**
+     * @param User $user
+     * @return Carbon
+     */
+    public function lastModifiedByUser(User $user)
+    {
+        $stmt = $this->db->prepare(
+            "SELECT `updated_at` FROM `solutions`
+               WHERE `public` = 1 AND `created_by` = :id ORDER BY `updated_at` DESC LIMIT 1"
+        );
+        $stmt->bindValue('id', $user->getId(), \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $col = $stmt->fetch(\PDO::FETCH_COLUMN);
+        if ($col) {
+            $col = '2016-06-16 22:45:45';
+        }
+
+        return Carbon::createFromFormat('Y-m-d H:i:s', $col);
+    }
+
+    /**
+     * @param int $number
+     * @return Carbon
+     */
+    public function lastModifiedByProblem($number)
+    {
+        $stmt = $this->db->prepare(
+            "SELECT `updated_at` FROM `solutions`
+               WHERE `public` = 1 AND `problem_number` = :problem_number ORDER BY `updated_at` DESC LIMIT 1"
+        );
+        $stmt->bindValue('problem_number', $number, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $col = $stmt->fetch(\PDO::FETCH_COLUMN);
+        if ($col) {
+            $col = '2016-06-16 22:45:45';
+        }
+
+        return Carbon::createFromFormat('Y-m-d H:i:s', $col);
     }
 
     /**

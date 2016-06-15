@@ -10,6 +10,7 @@ namespace MttProjecteuler\Controller;
 
 use MttProjecteuler\Model\User;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,12 +19,21 @@ class WebController extends BaseController
 {
     /**
      * @param Application $app
+     * @param Request $request
      * @param string $page
      * @return Response
      */
-    public function index(Application $app, $page)
+    public function index(Application $app, Request $request, $page)
     {
         $page = (int)$page;
+
+        $etag = $this->computeEtag($app, 'index', $app['pe_database.repository']->lastModifiedStartpage(), $page);
+        $response = new Response();
+        $response->setEtag($etag);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
         $countPages = $app['pe_database.repository']->getCountResultsForStartpage();
 
         if ($page > $countPages) {
@@ -37,18 +47,30 @@ class WebController extends BaseController
 
         $results = $app['pe_database.repository']->getResultsForStartpage($page);
 
-        return new Response($app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta')));
+        $response = new Response($app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta')));
+        $response->setEtag($etag);
+
+        return $response;
     }
 
     /**
      * @param Application $app
+     * @param Request $request
      * @param User $user
      * @param string $page
      * @return Response
      */
-    public function user(Application $app, User $user, $page)
+    public function user(Application $app, Request $request, User $user, $page)
     {
         $page = (int)$page;
+
+        $etag = $this->computeEtag($app, 'user', $app['pe_database.repository']->lastModifiedByUser($user), $page);
+        $response = new Response();
+        $response->setEtag($etag);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
         $countPages = $app['pe_database.repository']->getCountResultsForUser($user);
 
         if ($page > $countPages) {
@@ -65,36 +87,58 @@ class WebController extends BaseController
 
         $results = $app['pe_database.repository']->getResultsForUser($user, $page);
 
-        return new Response($app['twig']->render(
+        $response = new Response($app['twig']->render(
             'web/user.html.twig',
             compact('results', 'page', 'paginationMeta', 'user')
         ));
+        $response->setEtag($etag);
+
+        return $response;
     }
 
     /**
      * @param Application $app
-     * @param $number
+     * @param Request $request
+     * @param string $number
      * @return Response
      */
-    public function problem(Application $app, $number)
+    public function problem(Application $app, Request $request, $number)
     {
         $number = (int)$number;
+
+        $etag = $this->computeEtag($app, 'problem', $app['pe_database.repository']->lastModifiedByProblem($number));
+        $response = new Response();
+        $response->setEtag($etag);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
 
         $results = $app['pe_database.repository']->getResultsByProblem($number);
         $problem = $app['pe_database.repository']->findProblem($number);
 
-        return new Response($app['twig']->render('web/problem.html.twig', compact('results', 'number', 'problem')));
+        $response = new Response($app['twig']->render('web/problem.html.twig', compact('results', 'number', 'problem')));
+        $response->setEtag($etag);
+
+        return $response;
     }
 
     /**
      * @param Application $app
+     * @param Request $request
      * @param string $id
      * @return Response
      */
-    public function solution(Application $app, $id)
+    public function solution(Application $app, Request $request, $id)
     {
         $id = (int)$id;
         $result = $app['pe_database.repository']->getSingleResult($id);
+
+        $etag = $this->computeEtag($app, 'solution', $result['updated']);
+        $response = new Response();
+        $response->setEtag($etag);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
 
         if ($result === false) {
             throw new NotFoundHttpException(sprintf('WebController:solution, solution %d not found', $id));
@@ -102,15 +146,29 @@ class WebController extends BaseController
 
         $problem = $app['pe_database.repository']->findProblem($result['problem_number']);
 
-        return new Response($app['twig']->render('web/solution.html.twig', compact('result', 'id', 'problem')));
+        $response = new Response($app['twig']->render('web/solution.html.twig', compact('result', 'id', 'problem')));
+        $response->setEtag($etag);
+
+        return $response;
     }
 
     /**
      * @param Application $app
+     * @param Request $request
      * @return Response
      */
-    public function about(Application $app)
+    public function about(Application $app, Request $request)
     {
-        return new Response($app['twig']->render('web/about.html.twig', []));
+        $etag = $this->computeEtagStatic($app, 'about');
+        $response = new Response();
+        $response->setEtag($etag);
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
+        $response = new Response($app['twig']->render('web/about.html.twig', []));
+        $response->setEtag($etag);
+
+        return $response;
     }
 }

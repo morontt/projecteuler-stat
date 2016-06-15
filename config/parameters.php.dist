@@ -6,4 +6,5 @@ return [
     'db_user' => 'user',
     'db_password' => 'password',
     'disqus_shortname' => 'example',
+    'git_hash' => 'f95ebd9',
 ];

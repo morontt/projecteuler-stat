@@ -39,6 +39,7 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
 $parameters = require_once __DIR__ . '/../config/parameters.php';
 
 $app['disqus_shortname'] = $parameters['disqus_shortname'];
+$app['git_hash'] = $parameters['git_hash'];
 
 $app->register(new DoctrineServiceProvider(), [
     'db.options' => [
