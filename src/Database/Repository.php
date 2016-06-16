@@ -325,7 +325,8 @@ SQL;
 
         $choices = [];
         foreach ($results as $item) {
-            $choices[sprintf('%s (%s)', $item['name'], $item['comment'])] = $item['id'];
+            $key = $item['comment'] ? sprintf('%s (%s)', $item['name'], $item['comment']) : $item['name'];
+            $choices[$key] = $item['id'];
         }
 
         return $choices;

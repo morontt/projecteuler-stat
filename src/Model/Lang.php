@@ -9,6 +9,7 @@
 namespace MttProjecteuler\Model;
 
 use Carbon\Carbon;
+use MttProjecteuler\Utils\Slug;
 
 class Lang extends AbstractModel
 {
@@ -20,6 +21,7 @@ class Lang extends AbstractModel
         'name',
         'comment',
         'lexer',
+        'slug',
         'created_by',
         'created_at',
         'updated_at',
@@ -36,7 +38,7 @@ class Lang extends AbstractModel
     protected $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $comment;
 
@@ -44,6 +46,11 @@ class Lang extends AbstractModel
      * @var string|null
      */
     protected $lexer;
+
+    /**
+     * @var string
+     */
+    protected $slug;
 
     /**
      * @var int
@@ -80,6 +87,7 @@ class Lang extends AbstractModel
             ->setName($data['name'])
             ->setComment($data['comment'])
             ->setLexer($data['lexer'])
+            ->setSlug($data['slug'])
             ->setCreatedBy($data['created_by'])
             ->setCreatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['created_at']))
             ->setUpdatedAt(Carbon::createFromFormat('Y-m-d H:i:s', $data['updated_at']))
@@ -95,6 +103,7 @@ class Lang extends AbstractModel
             'name' => $this->getName(),
             'comment' => $this->getComment(),
             'lexer' => $this->getLexer(),
+            'slug' => Slug::slugify($this->getName()),
             'created_by' => $this->getCreatedBy(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
@@ -114,7 +123,7 @@ class Lang extends AbstractModel
      */
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->getName(), $this->getComment());
+        return $this->comment ? sprintf('%s (%s)', $this->name, $this->comment) : $this->name;
     }
 
     /**
@@ -181,6 +190,25 @@ class Lang extends AbstractModel
     public function setLexer($lexer)
     {
         $this->lexer = $lexer;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }

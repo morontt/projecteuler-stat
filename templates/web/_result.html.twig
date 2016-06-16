@@ -23,6 +23,12 @@
         </div>
     </div>
     {% if result.lang_name %}
-        <div class="lang">{{ result.lang_name }} ({{ result.lang_comment }})</div>
+        <div class="lang">
+            {%- if result.lang_comment -%}
+                {{ result.lang_name }} ({{ result.lang_comment }})
+            {%- else -%}
+                {{ result.lang_name }}
+            {%- endif -%}
+        </div>
     {% endif %}
 </div>

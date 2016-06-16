@@ -16,3 +16,7 @@ Feature: pages
   Scenario: problem page
     Given I am on "/problem/10"
     Then I should see "Summation of primes"
+
+  Scenario: about page
+    Given I am on "/about"
+    Then I should see "Изначально планировал"
