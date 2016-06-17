@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-6">
             {%- for result in results -%}
-                {{ include('web/_result.html.twig') }}
+                {% include('web/_result.html.twig') with {'user_link': true, 'problem_link': false} %}
             {%- endfor -%}
         </div>
     </div>

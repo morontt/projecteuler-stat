@@ -18,14 +18,14 @@
         <div class="col-md-6">
             {%- for result in results -%}
                 {%- if loop.index is odd -%}
-                    {{ include('web/_result.html.twig') }}
+                    {% include('web/_result.html.twig') with {'user_link': true, 'problem_link': true} %}
                 {%- endif -%}
             {%- endfor -%}
         </div>
         <div class="col-md-6">
             {%- for result in results -%}
                 {%- if loop.index is even -%}
-                    {{ include('web/_result.html.twig') }}
+                    {% include('web/_result.html.twig') with {'user_link': true, 'problem_link': true} %}
                 {%- endif -%}
             {%- endfor -%}
         </div>

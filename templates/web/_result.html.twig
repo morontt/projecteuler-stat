@@ -1,17 +1,26 @@
 <div class="result-row clearfix">
     <div class="col1">
-        <a href="{{ path('userpage', {'user': result.user_slug }) }}">
+        {%- if user_link -%}
+            <a href="{{ path('userpage', {'user': result.user_slug }) }}">
+                <img src="//www.gravatar.com/avatar/{{ result.email_hash }}?d=monsterid&s=120"
+                     width="120" height="120"
+                     title="{{ result.username }}"
+                     class="avatar" alt="avatar"/>
+            </a>
+        {%- else -%}
             <img src="//www.gravatar.com/avatar/{{ result.email_hash }}?d=monsterid&s=120"
                  width="120" height="120"
                  title="{{ result.username }}"
                  class="avatar" alt="avatar"/>
-        </a>
+        {%- endif -%}
     </div>
     <div class="col2">
         <strong><a href="{{ path('solution', {'id': result.id}) }}">#{{ result.id }}</a></strong>
         <span class="time">{{ result.created|date('d.m.Y H:i') }}</span>
         <hr/>
-        <a href="{{ path('problem', {'number': result.problem_number}) }}">Проблема №{{ result.problem_number }}</a>
+        {% if problem_link %}
+            <a href="{{ path('problem', {'number': result.problem_number}) }}">Проблема №{{ result.problem_number }}</a>
+        {% endif %}
         <div class="res">Время:
             {% if result.execution_time > 60 -%}
                 <span class="bad">
