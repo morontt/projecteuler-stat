@@ -34,20 +34,28 @@ class WebController extends BaseController
             return $response;
         }
 
-        $countPages = $app['pe_database.repository']->getCountResultsForStartpage();
+        /* @var \Doctrine\Common\Cache\Cache $cache */
+        $cache = $app['pe_cache'];
+        if ($cache->contains($etag)) {
+            $content = $cache->fetch($etag);
+        } else {
+            $countPages = $app['pe_database.repository']->getCountResultsForStartpage();
 
-        if ($page > $countPages) {
-            throw new NotFoundHttpException(sprintf('WebController:index, page %d not found', $page));
+            if ($page > $countPages) {
+                throw new NotFoundHttpException(sprintf('WebController:index, page %d not found', $page));
+            }
+
+            $urlRenerator = $app['url_generator'];
+            $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator) {
+                return $urlRenerator->generate('homepage', ['page' => $p], UrlGeneratorInterface::ABSOLUTE_PATH);
+            });
+
+            $results = $app['pe_database.repository']->getResultsForStartpage($page);
+            $content = $app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta'));
+            $cache->save($etag, $content);
         }
 
-        $urlRenerator = $app['url_generator'];
-        $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator) {
-            return $urlRenerator->generate('homepage', ['page' => $p], UrlGeneratorInterface::ABSOLUTE_PATH);
-        });
-
-        $results = $app['pe_database.repository']->getResultsForStartpage($page);
-
-        $response = new Response($app['twig']->render('web/index.html.twig', compact('results', 'page', 'paginationMeta')));
+        $response = new Response($content);
         $response->setEtag($etag);
 
         return $response;
@@ -71,26 +79,31 @@ class WebController extends BaseController
             return $response;
         }
 
-        $countPages = $app['pe_database.repository']->getCountResultsForUser($user);
+        /* @var \Doctrine\Common\Cache\Cache $cache */
+        $cache = $app['pe_cache'];
+        if ($cache->contains($etag)) {
+            $content = $cache->fetch($etag);
+        } else {
+            $countPages = $app['pe_database.repository']->getCountResultsForUser($user);
 
-        if ($page > $countPages) {
-            throw new NotFoundHttpException(sprintf('WebController:user, page %d not found', $page));
+            if ($page > $countPages) {
+                throw new NotFoundHttpException(sprintf('WebController:user, page %d not found', $page));
+            }
+
+            $urlRenerator = $app['url_generator'];
+            $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator, $user) {
+                return $urlRenerator->generate(
+                    'userpage', ['page' => $p, 'user' => $user->getSlug()],
+                    UrlGeneratorInterface::ABSOLUTE_PATH
+                );
+            });
+
+            $results = $app['pe_database.repository']->getResultsForUser($user, $page);
+            $content = $app['twig']->render('web/user.html.twig', compact('results', 'page', 'paginationMeta', 'user'));
+            $cache->save($etag, $content);
         }
 
-        $urlRenerator = $app['url_generator'];
-        $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator, $user) {
-            return $urlRenerator->generate(
-                'userpage', ['page' => $p, 'user' => $user->getSlug()],
-                UrlGeneratorInterface::ABSOLUTE_PATH
-            );
-        });
-
-        $results = $app['pe_database.repository']->getResultsForUser($user, $page);
-
-        $response = new Response($app['twig']->render(
-            'web/user.html.twig',
-            compact('results', 'page', 'paginationMeta', 'user')
-        ));
+        $response = new Response($content);
         $response->setEtag($etag);
 
         return $response;
@@ -113,10 +126,19 @@ class WebController extends BaseController
             return $response;
         }
 
-        $results = $app['pe_database.repository']->getResultsByProblem($number);
-        $problem = $app['pe_database.repository']->findProblem($number);
+        /* @var \Doctrine\Common\Cache\Cache $cache */
+        $cache = $app['pe_cache'];
+        if ($cache->contains($etag)) {
+            $content = $cache->fetch($etag);
+        } else {
+            $results = $app['pe_database.repository']->getResultsByProblem($number);
+            $problem = $app['pe_database.repository']->findProblem($number);
 
-        $response = new Response($app['twig']->render('web/problem.html.twig', compact('results', 'number', 'problem')));
+            $content = $app['twig']->render('web/problem.html.twig', compact('results', 'number', 'problem'));
+            $cache->save($etag, $content);
+        }
+
+        $response = new Response($content);
         $response->setEtag($etag);
 
         return $response;
@@ -133,15 +155,15 @@ class WebController extends BaseController
         $id = (int)$id;
         $result = $app['pe_database.repository']->getSingleResult($id);
 
+        if ($result === false) {
+            throw new NotFoundHttpException(sprintf('WebController:solution, solution %d not found', $id));
+        }
+
         $etag = $this->computeEtag($app, 'solution', $result['updated']);
         $response = new Response();
         $response->setEtag($etag);
         if ($response->isNotModified($request)) {
             return $response;
-        }
-
-        if ($result === false) {
-            throw new NotFoundHttpException(sprintf('WebController:solution, solution %d not found', $id));
         }
 
         $problem = $app['pe_database.repository']->findProblem($result['problem_number']);

@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\Common\Cache\VoidCache;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use Sorien\Provider\PimpleDumpProvider;
@@ -17,3 +18,8 @@ $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.'/../var/logs/dev.log',
 ));
 $app->register(new PimpleDumpProvider());
+
+$app['git_hash'] = time();
+$app['pe_cache'] = function () {
+    return new VoidCache();
+};
