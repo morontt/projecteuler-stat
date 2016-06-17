@@ -9,6 +9,36 @@
     </div>
     <div class="row results-row">
         <div class="col-md-6">
+            <table class="table table-striped table-bordered">
+                <tbody>
+                {%- for lng in langStat -%}
+                    {%- if loop.index is odd -%}
+                        <tr>
+                            <td>{{ lng.name }}</td>
+                            <td>{{ lng.cnt }}</td>
+                        </tr>
+                    {%- endif -%}
+                {%- endfor -%}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped table-bordered">
+                <tbody>
+                {%- for lng in langStat -%}
+                    {%- if loop.index is even -%}
+                        <tr>
+                            <td>{{ lng.name }}</td>
+                            <td>{{ lng.cnt }}</td>
+                        </tr>
+                    {%- endif -%}
+                {%- endfor -%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row results-row">
+        <div class="col-md-6">
             {%- for result in results -%}
                 {%- if loop.index is odd -%}
                     {% include('web/_result.html.twig') with {'user_link': false, 'problem_link': true} %}

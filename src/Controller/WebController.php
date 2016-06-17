@@ -98,8 +98,16 @@ class WebController extends BaseController
                 );
             });
 
+            $langStat = $app['pe_database.repository']->getLangStatisticsByUser($user);
+            if (count($langStat) % 2 == 1) {
+                $langStat[] = ['cnt' => '', 'name' => '...'];
+            }
+
             $results = $app['pe_database.repository']->getResultsForUser($user, $page);
-            $content = $app['twig']->render('web/user.html.twig', compact('results', 'page', 'paginationMeta', 'user'));
+            $content = $app['twig']->render(
+                'web/user.html.twig',
+                compact('results', 'page', 'paginationMeta', 'user', 'langStat')
+            );
             $cache->save($etag, $content);
         }
 

@@ -333,6 +333,28 @@ SQL;
     }
 
     /**
+     * @param User $user
+     * @return array
+     */
+    public function getLangStatisticsByUser(User $user)
+    {
+        $sql = <<<SQL
+SELECT COUNT(`s`.`id`) AS `cnt`, `l`.`name` FROM `solutions` AS `s`
+INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
+INNER JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
+WHERE `u`.`id` = :userid AND `public` = 1
+GROUP BY `l`.`name` ORDER BY `cnt` DESC
+SQL;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('userid', $user->getId(), \PDO::PARAM_INT);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
+    /**
      * @param int $number
      * @return array
      */
