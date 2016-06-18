@@ -18,6 +18,58 @@
                 {{ form_widget(form) }}
             </form>
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                {% for i in 1..8 %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="i_{{ i }}">{{ i }}:</label>
+                        <div class="col-sm-10">
+                            <input id="i_{{ i }}" class="form-control" type="text" name="i_{{ i }}">
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-10">
+                        <button id="time_calc" class="btn-default btn" type="button">Calculate</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('#time_calc').on('click', function () {
+                var k = 0, v, x, avg, sigma, summ = 0, summkv = 0;
+                var arr = [];
+                $('input[id^="i_"]').each(function (idx, val) {
+                    v = $(val).val();
+                    if (v) {
+                        k++;
+                        x = parseFloat(v);
+                        arr.push(x);
+                        summ += x;
+                    }
+                });
+
+                avg = summ / k;
+
+                if (k > 1) {
+                    arr.forEach(function (el) {
+                        summkv += (el - avg) * (el - avg);
+                    });
+                    sigma = 3 * Math.sqrt(summkv / (k - 1));
+                } else {
+                    sigma = '';
+                }
+
+                $('#solution_executionTime').val(avg);
+                $('#solution_deviationTime').val(sigma);
+            });
+        });
+    </script>
 {% endblock %}
