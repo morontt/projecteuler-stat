@@ -105,14 +105,17 @@ class Repository
     }
 
     /**
+     * @param int $page
      * @return Solution[]
      */
-    public function findAllSolutions()
+    public function findAllSolutions($page)
     {
         $fields = Solution::getFieldsQueryString();
 
-        $sql = "SELECT {$fields} FROM `solutions` ORDER BY `id` DESC";
+        $sql = "SELECT {$fields} FROM `solutions` ORDER BY `id` DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('limit', self::LIMIT, \PDO::PARAM_INT);
+        $stmt->bindValue('offset', ($page - 1) * self::LIMIT, \PDO::PARAM_INT);
         $stmt->execute();
         $results = $stmt->fetchAll();
 
@@ -230,6 +233,18 @@ SQL;
         }
 
         return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountResults()
+    {
+        $stmt = $this->db->prepare('SELECT COUNT(`id`) AS `cnt` FROM `solutions`');
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        return (int)ceil((int)$result['cnt'] / self::LIMIT);
     }
 
     /**

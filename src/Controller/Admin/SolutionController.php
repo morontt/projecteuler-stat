@@ -14,6 +14,8 @@ use MttProjecteuler\Model\Solution;
 use MttProjecteuler\Utils\Pygment;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SolutionController extends BaseController
 {
@@ -21,11 +23,26 @@ class SolutionController extends BaseController
      * @param Application $app
      * @return string
      */
-    public function index(Application $app)
+    public function index(Application $app, $page)
     {
-        $entities = $app['pe_database.repository']->findAllSolutions();
+        $page = (int)$page;
+        $entities = $app['pe_database.repository']->findAllSolutions($page);
 
-        return $app['twig']->render('admin/solution/index.html.twig', compact('entities'));
+        $countPages = $app['pe_database.repository']->getCountResults();
+        if ($page > $countPages) {
+            throw new NotFoundHttpException(sprintf('WebController:index, page %d not found', $page));
+        }
+
+        $urlRenerator = $app['url_generator'];
+        $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator) {
+            return $urlRenerator->generate(
+                'admin_solutions_index',
+                ['page' => $p],
+                UrlGeneratorInterface::ABSOLUTE_PATH
+            );
+        });
+
+        return $app['twig']->render('admin/solution/index.html.twig', compact('entities', 'paginationMeta'));
     }
 
     /**

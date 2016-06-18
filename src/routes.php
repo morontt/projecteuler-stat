@@ -49,7 +49,9 @@ $app->mount('/area_51', function (ControllerCollection $admin) {
         ->bind('admin_dashboard');
 
     $admin->mount('/solutions', function (ControllerCollection $sol) {
-        $sol->get('/', 'MttProjecteuler\\Controller\\Admin\\SolutionController::index')
+        $sol->get('/{page}', 'MttProjecteuler\\Controller\\Admin\\SolutionController::index')
+            ->assert('page', '\d+')
+            ->value('page', 1)
             ->bind('admin_solutions_index');
 
         $sol->match('/create', 'MttProjecteuler\\Controller\\Admin\\SolutionController::create')
