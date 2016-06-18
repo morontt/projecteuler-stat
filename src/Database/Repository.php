@@ -423,7 +423,7 @@ SQL;
         $stmt->execute();
 
         $col = $stmt->fetch(\PDO::FETCH_COLUMN);
-        if ($col) {
+        if (!$col) {
             $col = '2016-06-16 22:45:45';
         }
 
@@ -444,7 +444,7 @@ SQL;
         $stmt->execute();
 
         $col = $stmt->fetch(\PDO::FETCH_COLUMN);
-        if ($col) {
+        if (!$col) {
             $col = '2016-06-16 22:45:45';
         }
 
@@ -465,7 +465,7 @@ SQL;
         $stmt->execute();
 
         $col = $stmt->fetch(\PDO::FETCH_COLUMN);
-        if ($col) {
+        if (!$col) {
             $col = '2016-06-16 22:45:45';
         }
 

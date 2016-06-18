@@ -65,6 +65,13 @@ class SolutionController extends BaseController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
+            if ($form->get('generate')->getData() && $entity->getSourceLink()) {
+                $lang = $app['pe_database.repository']->findLang((int)$entity->getLangId());
+                if ($lang && $lang->getLexer()) {
+                    $entity->setSourceHtml(Pygment::highlight($entity->getSourceLink(), $lang->getLexer()));
+                }
+            }
+
             $app['db']->insert('solutions', $entity->toArray());
             $app['session']->getFlashBag()->add('success', 'Решение создано');
 
