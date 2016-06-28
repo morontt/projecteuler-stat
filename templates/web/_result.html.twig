@@ -21,15 +21,7 @@
         {% if problem_link %}
             <a href="{{ path('problem', {'number': result.problem_number}) }}">Проблема №{{ result.problem_number }}</a>
         {% endif %}
-        <div class="res">Время:
-            {% if result.execution_time > 60 -%}
-                <span class="bad">
-                    {{ result.execution_time }} {% if result.deviation_time %}&plusmn; {{ result.deviation_time }} сек.{% endif -%}
-                </span>
-            {%- else -%}
-                {{ result.execution_time }} {% if result.deviation_time %}&plusmn; {{ result.deviation_time }} сек.{% endif -%}
-            {%- endif -%}
-        </div>
+        <div class="res">Время: {{ result|result_time }}</div>
     </div>
     {% if result.lang_name %}
         <div class="lang">

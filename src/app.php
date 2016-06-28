@@ -33,6 +33,37 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
         return call_user_func_array($callable, $arguments);
     }));
 
+    $twig->addFilter('result_time', new \Twig_SimpleFilter('result_time', function () {
+        $arguments = func_get_args();
+
+        $time = $arguments[0]['execution_time'];
+        $deviation = $arguments[0]['deviation_time'];
+
+        if ($time > 60) {
+            if ($time > 180) {
+                $min = floor($time / 60);
+                $time -= $min * 60;
+
+                $result = '<span class="bad">' . $min . ' мин. ' . $time;
+            } else {
+                $result = '<span class="bad">' . $time;
+            }
+
+            if ($deviation) {
+                $result .= ' &plusmn; ' . $deviation;
+            }
+            $result .= ' сек.</span>';
+        } else {
+            $result = $time;
+            if ($deviation) {
+                $result .= ' &plusmn; ' . $deviation;
+            }
+            $result .= ' сек.';
+        }
+
+        return $result;
+    }, ['is_safe' => ['html']]));
+
     return $twig;
 });
 
