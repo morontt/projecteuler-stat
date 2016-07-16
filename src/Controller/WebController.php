@@ -127,7 +127,13 @@ class WebController extends BaseController
     {
         $number = (int)$number;
 
-        $etag = $this->computeEtag($app, 'problem', $app['pe_database.repository']->lastModifiedByProblem($number));
+        $etag = $this->computeEtag(
+            $app,
+            'problem',
+            $app['pe_database.repository']->lastModifiedByProblem($number),
+            $number
+        );
+
         $response = new Response();
         $response->setEtag($etag);
         if ($response->isNotModified($request)) {
