@@ -14,6 +14,7 @@ class AdminController extends BaseController
 {
     /**
      * @param Application $app
+     *
      * @return mixed
      */
     public function dashboard(Application $app)

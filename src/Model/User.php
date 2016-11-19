@@ -68,7 +68,6 @@ class User extends AbstractModel implements UserInterface, \Serializable
      */
     protected $createdAt;
 
-
     public function __construct()
     {
         $this->salt = substr(base_convert(bin2hex(openssl_random_pseudo_bytes(14)), 16, 36), 0, 20);
@@ -76,7 +75,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -89,16 +88,15 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->username,
             $this->password,
-            $this->salt,
-            ) = unserialize($serialized);
+            $this->salt) = unserialize($serialized);
     }
 
     /**
@@ -147,6 +145,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -157,7 +156,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUsername()
     {
@@ -166,6 +165,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param string $username
+     *
      * @return $this
      */
     public function setUsername($username)
@@ -185,6 +185,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param string $email
+     *
      * @return $this
      */
     public function setEmail($email)
@@ -204,6 +205,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
@@ -214,7 +216,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSalt()
     {
@@ -223,6 +225,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param string $salt
+     *
      * @return $this
      */
     public function setSalt($salt)
@@ -233,7 +236,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPassword()
     {
@@ -242,6 +245,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param string $password
+     *
      * @return $this
      */
     public function setPassword($password)
@@ -261,6 +265,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param Carbon $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(Carbon $createdAt)
@@ -280,6 +285,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     /**
      * @param string $emailHash
+     *
      * @return $this
      */
     public function setEmailHash($emailHash)
@@ -290,7 +296,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRoles()
     {
@@ -298,7 +304,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function eraseCredentials()
     {

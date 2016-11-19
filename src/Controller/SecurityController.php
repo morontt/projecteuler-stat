@@ -16,6 +16,7 @@ class SecurityController
     /**
      * @param Application $app
      * @param Request $request
+     *
      * @return string
      */
     public function login(Application $app, Request $request)

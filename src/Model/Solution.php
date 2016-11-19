@@ -55,12 +55,12 @@ class Solution extends AbstractModel
     protected $sourceHtml;
 
     /**
-     * @var double
+     * @var float
      */
     protected $executionTime;
 
     /**
-     * @var double
+     * @var float
      */
     protected $deviationTime;
 
@@ -83,7 +83,6 @@ class Solution extends AbstractModel
      * @var Carbon
      */
     protected $updatedAt;
-
 
     public function __construct()
     {
@@ -143,6 +142,7 @@ class Solution extends AbstractModel
 
     /**
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -162,6 +162,7 @@ class Solution extends AbstractModel
 
     /**
      * @param int $problemNumber
+     *
      * @return $this
      */
     public function setProblemNumber($problemNumber)
@@ -181,6 +182,7 @@ class Solution extends AbstractModel
 
     /**
      * @param int $langId
+     *
      * @return $this
      */
     public function setLangId($langId)
@@ -200,6 +202,7 @@ class Solution extends AbstractModel
 
     /**
      * @param null|string $sourceLink
+     *
      * @return $this
      */
     public function setSourceLink($sourceLink)
@@ -219,6 +222,7 @@ class Solution extends AbstractModel
 
     /**
      * @param null|string $sourceHtml
+     *
      * @return $this
      */
     public function setSourceHtml($sourceHtml)
@@ -238,11 +242,12 @@ class Solution extends AbstractModel
 
     /**
      * @param float $executionTime
+     *
      * @return $this
      */
     public function setExecutionTime($executionTime)
     {
-        $this->executionTime = (double)$executionTime;
+        $this->executionTime = (float)$executionTime;
 
         return $this;
     }
@@ -257,17 +262,18 @@ class Solution extends AbstractModel
 
     /**
      * @param float $deviationTime
+     *
      * @return $this
      */
     public function setDeviationTime($deviationTime)
     {
-        $this->deviationTime = $deviationTime === null ? null : (double)$deviationTime;
+        $this->deviationTime = $deviationTime === null ? null : (float)$deviationTime;
 
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPublic()
     {
@@ -296,6 +302,7 @@ class Solution extends AbstractModel
 
     /**
      * @param int $createdBy
+     *
      * @return $this
      */
     public function setCreatedBy($createdBy)
@@ -315,6 +322,7 @@ class Solution extends AbstractModel
 
     /**
      * @param Carbon $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt($createdAt)
@@ -334,6 +342,7 @@ class Solution extends AbstractModel
 
     /**
      * @param Carbon $updatedAt
+     *
      * @return $this
      */
     public function setUpdatedAt($updatedAt)

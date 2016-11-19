@@ -18,14 +18,13 @@ class UserProvider implements UserProviderInterface
 {
     protected $repository;
 
-
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function loadUserByUsername($username)
     {
@@ -39,7 +38,7 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function refreshUser(UserInterface $user)
     {
@@ -51,7 +50,7 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supportsClass($class)
     {

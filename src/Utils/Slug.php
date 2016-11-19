@@ -8,11 +8,11 @@
 
 namespace MttProjecteuler\Utils;
 
-
 class Slug
 {
     /**
      * @param string $text
+     *
      * @return string
      */
     public static function slugify($text)

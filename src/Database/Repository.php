@@ -23,17 +23,17 @@ class Repository
      */
     protected $db;
 
-
     /**
      * @param Connection $db
      */
-    function __construct(Connection $db)
+    public function __construct(Connection $db)
     {
         $this->db = $db;
     }
 
     /**
      * @param string $username
+     *
      * @return User|null
      */
     public function findUserByUsername($username)
@@ -58,6 +58,7 @@ class Repository
 
     /**
      * @param string $slug
+     *
      * @return User|null
      */
     public function findUserBySlug($slug)
@@ -82,6 +83,7 @@ class Repository
 
     /**
      * @param int $id
+     *
      * @return Solution|null
      */
     public function findSolution($id)
@@ -106,6 +108,7 @@ class Repository
 
     /**
      * @param int $page
+     *
      * @return Solution[]
      */
     public function findAllSolutions($page)
@@ -132,6 +135,7 @@ class Repository
 
     /**
      * @param int $page
+     *
      * @return array
      */
     public function getResultsForStartpage($page)
@@ -158,6 +162,7 @@ class Repository
     /**
      * @param User $user
      * @param int $page
+     *
      * @return array
      */
     public function getResultsForUser(User $user, $page)
@@ -184,6 +189,7 @@ class Repository
 
     /**
      * @param int $number
+     *
      * @return array
      */
     public function getResultsByProblem($number)
@@ -208,11 +214,12 @@ class Repository
 
     /**
      * @param int $id
+     *
      * @return array
      */
     public function getSingleResult($id)
     {
-        $sql = <<<SQL
+        $sql = <<<'SQL'
 SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
   `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`, `u`.`slug` AS `user_slug`,
   `s`.`source_html`, `s`.`updated_at`
@@ -261,11 +268,12 @@ SQL;
 
     /**
      * @param User $user
+     *
      * @return int
      */
     public function getCountResultsForUser(User $user)
     {
-        $sql = <<<SQL
+        $sql = <<<'SQL'
 SELECT COUNT(`s`.`id`) AS `cnt` FROM `solutions` AS `s`
 INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
 WHERE `u`.`id` = :userid AND `public` = 1
@@ -281,6 +289,7 @@ SQL;
 
     /**
      * @param int $id
+     *
      * @return Lang|null
      */
     public function findLang($id)
@@ -349,11 +358,12 @@ SQL;
 
     /**
      * @param User $user
+     *
      * @return array
      */
     public function getLangStatisticsByUser(User $user)
     {
-        $sql = <<<SQL
+        $sql = <<<'SQL'
 SELECT COUNT(`s`.`id`) AS `cnt`, `l`.`name` FROM `solutions` AS `s`
 INNER JOIN `users` AS `u` ON `s`.`created_by` = `u`.`id`
 INNER JOIN `languages` AS `l` ON `s`.`lang_id` = `l`.`id`
@@ -371,11 +381,12 @@ SQL;
 
     /**
      * @param int $number
+     *
      * @return array
      */
     public function findProblem($number)
     {
-        $sql = "SELECT `id`, `problem_number`, `title` FROM `problems` WHERE `problem_number` = :number";
+        $sql = 'SELECT `id`, `problem_number`, `title` FROM `problems` WHERE `problem_number` = :number';
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('number', $number, \PDO::PARAM_INT);
         $stmt->execute();
@@ -418,7 +429,7 @@ SQL;
     public function lastModifiedStartpage()
     {
         $stmt = $this->db->prepare(
-            "SELECT `updated_at` FROM `solutions` WHERE `public` = 1 ORDER BY `updated_at` DESC LIMIT 1"
+            'SELECT `updated_at` FROM `solutions` WHERE `public` = 1 ORDER BY `updated_at` DESC LIMIT 1'
         );
         $stmt->execute();
 
@@ -432,13 +443,14 @@ SQL;
 
     /**
      * @param User $user
+     *
      * @return Carbon
      */
     public function lastModifiedByUser(User $user)
     {
         $stmt = $this->db->prepare(
-            "SELECT `updated_at` FROM `solutions`
-               WHERE `public` = 1 AND `created_by` = :id ORDER BY `updated_at` DESC LIMIT 1"
+            'SELECT `updated_at` FROM `solutions`
+               WHERE `public` = 1 AND `created_by` = :id ORDER BY `updated_at` DESC LIMIT 1'
         );
         $stmt->bindValue('id', $user->getId(), \PDO::PARAM_INT);
         $stmt->execute();
@@ -453,13 +465,14 @@ SQL;
 
     /**
      * @param int $number
+     *
      * @return Carbon
      */
     public function lastModifiedByProblem($number)
     {
         $stmt = $this->db->prepare(
-            "SELECT `updated_at` FROM `solutions`
-               WHERE `public` = 1 AND `problem_number` = :problem_number ORDER BY `updated_at` DESC LIMIT 1"
+            'SELECT `updated_at` FROM `solutions`
+               WHERE `public` = 1 AND `problem_number` = :problem_number ORDER BY `updated_at` DESC LIMIT 1'
         );
         $stmt->bindValue('problem_number', $number, \PDO::PARAM_INT);
         $stmt->execute();
@@ -477,7 +490,7 @@ SQL;
      */
     protected function getCommonResultsQuery()
     {
-        return <<<SQL
+        return <<<'SQL'
 SELECT `s`.`id`, `s`.`problem_number`, `s`.`execution_time`, `s`.`deviation_time`, `s`.`created_at`, `u`.`username`,
   `u`.`email_hash`, `l`.`name` AS `lang_name`, `l`.`comment` AS `lang_comment`, `u`.`slug` AS `user_slug`
 FROM `solutions` AS `s`

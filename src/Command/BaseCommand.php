@@ -20,6 +20,7 @@ class BaseCommand extends Command
 
     /**
      * @param Application $container
+     *
      * @return $this
      */
     public function setContainer(Application $container)

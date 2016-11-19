@@ -21,6 +21,7 @@ class WebController extends BaseController
      * @param Application $app
      * @param Request $request
      * @param string $page
+     *
      * @return Response
      */
     public function index(Application $app, Request $request, $page)
@@ -66,6 +67,7 @@ class WebController extends BaseController
      * @param Request $request
      * @param User $user
      * @param string $page
+     *
      * @return Response
      */
     public function user(Application $app, Request $request, User $user, $page)
@@ -121,6 +123,7 @@ class WebController extends BaseController
      * @param Application $app
      * @param Request $request
      * @param string $number
+     *
      * @return Response
      */
     public function problem(Application $app, Request $request, $number)
@@ -162,6 +165,7 @@ class WebController extends BaseController
      * @param Application $app
      * @param Request $request
      * @param string $id
+     *
      * @return Response
      */
     public function solution(Application $app, Request $request, $id)
@@ -191,6 +195,7 @@ class WebController extends BaseController
     /**
      * @param Application $app
      * @param Request $request
+     *
      * @return Response
      */
     public function about(Application $app, Request $request)

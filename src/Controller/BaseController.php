@@ -17,6 +17,7 @@ class BaseController
      * @param int $page
      * @param int $count
      * @param callable $urlGenerator
+     *
      * @return array
      */
     public function getPaginationMetadata($page, $count, callable $urlGenerator)
@@ -35,6 +36,7 @@ class BaseController
      * @param string $action
      * @param Carbon $lastModified
      * @param int $page
+     *
      * @return string
      */
     public function computeEtag(Application $app, $action, Carbon $lastModified, $page = 1)
@@ -53,6 +55,7 @@ class BaseController
     /**
      * @param Application $app
      * @param string $action
+     *
      * @return string
      */
     public function computeEtagStatic(Application $app, $action)

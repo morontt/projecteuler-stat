@@ -8,12 +8,12 @@
 
 namespace MttProjecteuler\Utils;
 
-
 class Pygment
 {
     /**
      * @param string $url
      * @param string $lexer
+     *
      * @return string|null
      */
     public static function highlight($url, $lexer)
@@ -29,7 +29,7 @@ class Pygment
             );
 
             $tmp = sys_get_temp_dir();
-            $file = $tmp . '/'. pathinfo($matches[3], PATHINFO_BASENAME);
+            $file = $tmp . '/' . pathinfo($matches[3], PATHINFO_BASENAME);
 
             $fp = fopen($file, 'w');
 

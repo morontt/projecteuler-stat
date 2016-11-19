@@ -14,6 +14,7 @@ class SolutionConverter extends AbstractConverter
 {
     /**
      * @param $id
+     *
      * @return \MttProjecteuler\Model\Solution|null
      */
     public function convert($id)

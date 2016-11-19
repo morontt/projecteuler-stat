@@ -14,6 +14,7 @@ class LangConverter extends AbstractConverter
 {
     /**
      * @param $id
+     *
      * @return \MttProjecteuler\Model\Lang|null
      */
     public function convert($id)

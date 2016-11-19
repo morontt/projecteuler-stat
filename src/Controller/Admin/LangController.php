@@ -18,6 +18,7 @@ class LangController extends BaseController
 {
     /**
      * @param Application $app
+     *
      * @return string
      */
     public function index(Application $app)
@@ -30,6 +31,7 @@ class LangController extends BaseController
     /**
      * @param Application $app
      * @param Request $request
+     *
      * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function create(Application $app, Request $request)
@@ -61,6 +63,7 @@ class LangController extends BaseController
      * @param Application $app
      * @param Request $request
      * @param Lang $entity
+     *
      * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function edit(Application $app, Request $request, Lang $entity)
@@ -89,6 +92,7 @@ class LangController extends BaseController
     /**
      * @param Application $app
      * @param Lang $entity
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Application $app, Lang $entity)

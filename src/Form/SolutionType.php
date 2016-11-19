@@ -32,12 +32,12 @@ class SolutionType extends AbstractType
 
         $builder
             ->add('problemNumber')
-            ->add('langId', ChoiceType::class, ['choices' => $choices, 'required' => false,])
+            ->add('langId', ChoiceType::class, ['choices' => $choices, 'required' => false])
             ->add('sourceLink')
-            ->add('generate', CheckboxType::class, ['mapped' => false, 'required' => false,])
+            ->add('generate', CheckboxType::class, ['mapped' => false, 'required' => false])
             ->add('executionTime')
             ->add('deviationTime')
-            ->add('public', CheckboxType::class, ['required' => false,])
+            ->add('public', CheckboxType::class, ['required' => false])
             ->add('submit', SubmitType::class)
         ;
     }

@@ -8,7 +8,6 @@
 
 namespace MttProjecteuler\Model;
 
-
 abstract class AbstractModel
 {
     /**

@@ -14,6 +14,7 @@ class UserConverter extends AbstractConverter
 {
     /**
      * @param string $slug
+     *
      * @return \MttProjecteuler\Model\User|null
      */
     public function convert($slug)

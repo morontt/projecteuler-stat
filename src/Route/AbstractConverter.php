@@ -27,7 +27,8 @@ abstract class AbstractConverter
 
     /**
      * @param $id
+     *
      * @return mixed
      */
-    public abstract function convert($id);
+    abstract public function convert($id);
 }

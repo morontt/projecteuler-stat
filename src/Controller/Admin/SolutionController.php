@@ -21,6 +21,7 @@ class SolutionController extends BaseController
 {
     /**
      * @param Application $app
+     *
      * @return string
      */
     public function index(Application $app, $page)
@@ -48,6 +49,7 @@ class SolutionController extends BaseController
     /**
      * @param Application $app
      * @param Request $request
+     *
      * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function create(Application $app, Request $request)
@@ -92,6 +94,7 @@ class SolutionController extends BaseController
      * @param Application $app
      * @param Request $request
      * @param Solution $entity
+     *
      * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function edit(Application $app, Request $request, Solution $entity)
@@ -134,6 +137,7 @@ class SolutionController extends BaseController
     /**
      * @param Application $app
      * @param Solution $entity
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Application $app, Solution $entity)

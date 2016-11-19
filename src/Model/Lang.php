@@ -67,7 +67,6 @@ class Lang extends AbstractModel
      */
     protected $updatedAt;
 
-
     public function __construct()
     {
         $this->createdAt = new Carbon();
@@ -128,6 +127,7 @@ class Lang extends AbstractModel
 
     /**
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -147,6 +147,7 @@ class Lang extends AbstractModel
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -166,6 +167,7 @@ class Lang extends AbstractModel
 
     /**
      * @param string $comment
+     *
      * @return $this
      */
     public function setComment($comment)
@@ -185,6 +187,7 @@ class Lang extends AbstractModel
 
     /**
      * @param null|string $lexer
+     *
      * @return $this
      */
     public function setLexer($lexer)
@@ -204,6 +207,7 @@ class Lang extends AbstractModel
 
     /**
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
@@ -223,6 +227,7 @@ class Lang extends AbstractModel
 
     /**
      * @param int $createdBy
+     *
      * @return $this
      */
     public function setCreatedBy($createdBy)
@@ -242,6 +247,7 @@ class Lang extends AbstractModel
 
     /**
      * @param Carbon $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt($createdAt)
@@ -261,6 +267,7 @@ class Lang extends AbstractModel
 
     /**
      * @param Carbon $updatedAt
+     *
      * @return $this
      */
     public function setUpdatedAt($updatedAt)

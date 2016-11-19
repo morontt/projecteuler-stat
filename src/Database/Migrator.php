@@ -21,14 +21,16 @@ class Migrator
     /**
      * @param Connection $db
      */
-    function __construct(Connection $db)
+    public function __construct(Connection $db)
     {
         $this->db = $db;
     }
 
     /**
      * @param bool $dryRun
+     *
      * @return array
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function migrate($dryRun)
