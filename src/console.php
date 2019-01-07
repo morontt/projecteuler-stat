@@ -2,6 +2,7 @@
 
 use MttProjecteuler\Command\DbSchema;
 use MttProjecteuler\Command\FixturesLoad;
+use MttProjecteuler\Command\UserChangePassword;
 use MttProjecteuler\Command\UserCreate;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,6 +16,7 @@ $console->getDefinition()->addOption(
 $console->setDispatcher($app['dispatcher']);
 $console->add((new DbSchema())->setContainer($app));
 $console->add((new UserCreate())->setContainer($app));
+$console->add((new UserChangePassword())->setContainer($app));
 $console->add((new FixturesLoad())->setContainer($app));
 
 return $console;

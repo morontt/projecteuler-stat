@@ -11,9 +11,9 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "ext-openssl": "*",
         "ext-hash": "*",
         "ext-intl": "*",
+        "ext-pdo_mysql": "*",
         "doctrine/dbal": "~2.2",
         "nesbot/carbon": "~1.21",
         "silex/silex": "~2.0",

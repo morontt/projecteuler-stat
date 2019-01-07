@@ -93,12 +93,16 @@ class WebController extends BaseController
             }
 
             $urlRenerator = $app['url_generator'];
-            $paginationMeta = $this->getPaginationMetadata($page, $countPages, function ($p) use ($urlRenerator, $user) {
-                return $urlRenerator->generate(
-                    'userpage', ['page' => $p, 'user' => $user->getSlug()],
-                    UrlGeneratorInterface::ABSOLUTE_PATH
-                );
-            });
+            $paginationMeta = $this->getPaginationMetadata(
+                $page,
+                $countPages,
+                function ($p) use ($urlRenerator, $user) {
+                    return $urlRenerator->generate(
+                        'userpage', ['page' => $p, 'user' => $user->getSlug()],
+                        UrlGeneratorInterface::ABSOLUTE_PATH
+                    );
+                }
+            );
 
             $langStat = $app['pe_database.repository']->getLangStatisticsByUser($user);
             if (count($langStat) % 2 == 1) {

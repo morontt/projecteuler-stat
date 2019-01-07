@@ -10,6 +10,7 @@ namespace MttProjecteuler\Database;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use MttProjecteuler\Model\Lang;
 use MttProjecteuler\Model\Solution;
 use MttProjecteuler\Model\User;
@@ -32,7 +33,7 @@ class Repository
     }
 
     /**
-     * @param string $username
+     * @param $username
      *
      * @return User|null
      */
@@ -41,10 +42,15 @@ class Repository
         $fields = User::getFieldsQueryString();
 
         $sql = "SELECT {$fields} FROM `users` WHERE `username` = :username";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue('username', $username, \PDO::PARAM_STR);
-        $stmt->execute();
-        $result = $stmt->fetch();
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue('username', $username, \PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetch();
+        } catch (DBALException $e) {
+            return null;
+        }
 
         if ($result) {
             $entity = new User();

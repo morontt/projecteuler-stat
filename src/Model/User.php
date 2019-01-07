@@ -9,6 +9,7 @@
 namespace MttProjecteuler\Model;
 
 use Carbon\Carbon;
+use MttProjecteuler\Utils\Salt;
 use MttProjecteuler\Utils\Slug;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -70,7 +71,7 @@ class User extends AbstractModel implements UserInterface, \Serializable
 
     public function __construct()
     {
-        $this->salt = substr(base_convert(bin2hex(openssl_random_pseudo_bytes(14)), 16, 36), 0, 20);
+        $this->salt = Salt::generate();
         $this->createdAt = new Carbon();
     }
 
