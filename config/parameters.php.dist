@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'db_host' => '127.0.0.1',
-    'db_name' => 'projecteuler',
-    'db_user' => 'user',
-    'db_password' => 'password',
+    'db_host' => 'mysql',
+    'db_name' => 'pe-stat',
+    'db_user' => 'pe-stat',
+    'db_password' => 'docker',
     'disqus_shortname' => 'example',
     'git_hash' => 'f95ebd9',
 ];

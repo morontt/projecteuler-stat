@@ -1,0 +1,50 @@
+version: '2'
+services:
+    source:
+        image: alpine:3.8
+        volumes:
+            - ./:/var/www/pe-stat
+
+    mysql:
+        build:
+            context: ./docker/db
+            args:
+                HOST_UID: ${HOST_UID}
+        volumes:
+            - ${DB_DATA_PATH}:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: docker
+            MYSQL_DATABASE: pe-stat
+            MYSQL_USER: pe-stat
+            MYSQL_PASSWORD: docker
+
+    site:
+        build:
+            context: ./docker/web
+            # dockerfile: prod/Dockerfile
+            args:
+                HOST_UID: ${HOST_UID}
+        container_name: "pe_stat_web"
+        links:
+            - mysql
+        depends_on:
+            - source
+            - mysql
+        volumes_from:
+            - source
+        environment:
+            APPLICATION_ENV: development
+
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - "80:80"
+        depends_on:
+            - site
+            - source
+        links:
+            - site
+        volumes_from:
+            - source
