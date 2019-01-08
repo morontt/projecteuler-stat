@@ -4,7 +4,7 @@ MAINTAINER Alexander Harchenko <morontt@gmail.com>
 
 ARG HOST_UID=1000
 
-RUN apk --no-cache add tzdata shadow icu-dev
+RUN apk --no-cache add tzdata shadow icu-dev py-pygments
 RUN cp /usr/share/zoneinfo/Europe/Kiev /etc/localtime \
     && echo "Europe/Kiev" >  /etc/timezone
 

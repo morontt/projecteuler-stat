@@ -14,6 +14,7 @@
         "ext-hash": "*",
         "ext-intl": "*",
         "ext-pdo_mysql": "*",
+        "ext-curl": "*",
         "doctrine/dbal": "~2.2",
         "nesbot/carbon": "~1.21",
         "silex/silex": "~2.0",
