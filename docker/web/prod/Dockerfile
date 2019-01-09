@@ -2,6 +2,8 @@ FROM php:7.1-fpm-alpine
 
 MAINTAINER Alexander Harchenko <morontt@gmail.com>
 
+VOLUME ["/var/www/pe-stat"]
+
 ARG HOST_UID=1000
 
 RUN apk --no-cache add tzdata shadow icu-dev py-pygments
