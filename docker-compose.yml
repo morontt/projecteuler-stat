@@ -23,7 +23,8 @@ services:
     site:
         build:
             context: ./docker/web
-            # dockerfile: prod/Dockerfile
+            # context: .
+            # dockerfile: docker/web/prod/Dockerfile
             args:
                 HOST_UID: ${HOST_UID}
         container_name: "pe_stat_web"
