@@ -3,8 +3,8 @@ FROM php:7.1-fpm-alpine
 MAINTAINER Alexander Harchenko <morontt@gmail.com>
 
 RUN apk --no-cache add tzdata shadow icu-dev py-pygments
-RUN cp /usr/share/zoneinfo/Europe/Kiev /etc/localtime \
-    && echo "Europe/Kiev" >  /etc/timezone \
+RUN cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime \
+    && echo "Europe/Moscow" >  /etc/timezone \
     && cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 RUN docker-php-ext-install -j$(nproc) intl opcache pdo_mysql
