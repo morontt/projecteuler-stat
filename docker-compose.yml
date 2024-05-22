@@ -22,7 +22,7 @@ services:
 
     site:
         build:
-            context: ./docker/web
+            context: ./docker/apache
             # context: .
             # dockerfile: docker/web/prod/Dockerfile
             args:
