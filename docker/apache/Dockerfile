@@ -10,8 +10,8 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libicu-dev python3-pygments \
-    && docker-php-ext-install -j$(nproc) intl opcache pdo_mysql \
+    libicu-dev libzip-dev python3-pygments \
+    && docker-php-ext-install -j$(nproc) intl zip opcache pdo_mysql \
     && cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini \
     && sed -i 's/;date.timezone =/date.timezone = Europe\/Moscow/' ${PHP_INI_DIR}/php.ini \
     && a2enmod rewrite remoteip && a2dismod deflate -f
